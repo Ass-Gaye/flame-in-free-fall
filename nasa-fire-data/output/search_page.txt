@@ -1,0 +1,263 @@
+
+
+Investigation Search Filters
+Research Area
+
+Biophysics
+
+
+Combustion Science
+
+
+Complex Fluids - Soft Matter
+
+
+Fluid Physics
+
+
+Fundamental Physics
+
+
+Materials Science
+
+
+
+
+Project Type
+
+Ground Investigation
+
+
+Microgravity Investigation
+
+
+Reduced Gravity Investigation
+
+
+
+
+Physical Sciences InformaticsHomeData & Tools
+Contact Us
+close
+
+info In accordance with NASA’s Science Mission Directorate (SMD) Open Source Science guidance, users are required to cite all publicly available NASA-funded data and software collections hosted in PSI using their unique persistent identifiers (e.g., DOIs) to ensure proper attribution and traceability across peer-reviewed publications, proposals, presentations, and reports. For citation details, refer to the “Cite this Investigation” link provided on each investigation’s landing page.
+
+PSI Data Repository Search
+Search Datasets
+search
+Sort By:
+Release Date
+Items per page:
+25
+1 – 25 of 133
+Investigation
+PSI-117
+
+Effect of External Thermo-Convective Perturbation on Cool Flame Dynamics: A Multidimensional Multi-Physics CFD Analysis
+
+Research Area	Type	Objectives	Approach
+Combustion Science	Ground Investigation	The objective of this ground investigation was to use flight data obtained from PSI through NASA’s Flame Extinguishment Experiment (FLEX) to quantify how externally imposed thermal and convective pert...	OpenFOAM was used to develop a 3-D CFD model of n-alkane droplet cool flames in microgravity, coupling variable-density Navier–Stokes flow with low-temperature combustion chemistry, coupled heat and m...
+Highlights: PSI-117... PSI-69 PSI-142... National Aeronautics and Space Administration (NASA) PSI grant... The objective of this ground investigation was to use flight data obtained from PSI through NASA’s Flame... By leveraging and extending the FLEX data in the PSI, this study produced reusable models and sensitivity
+Investigation
+PSI-137
+
+Phase Transitions in Colloid-Polymer Mixtures in Microgravity
+
+Research Area	Type	Objectives	Approach
+Complex Fluids - Soft Matter	Ground Investigation	The objective of this PSI grant was to advance the understanding of phase transitions in colloid–polymer mixtures under microgravity conditions by integrating experimental observations with predictive...	The approach combined data-driven analysis of PSI-archived BCAT imagery with a phase-field modeling framework that coupled the Cahn–Hilliard and Stokes equations to simulate phase separation in colloi...
+Highlights: PSI-137... PSI-27 PSI-28 PSI-29 PSI-30... National Aeronautics and Space Administration (NASA) PSI grant... The objective of this PSI grant was to advance the understanding of phase transitions in colloid–polymer... Model parameters were tuned using physical data from PSI to validate predictions and refine understanding
+Investigation
+PSI-174
+
+Micromechanics Based Modeling of Cement Solidified in the Microgravity
+
+Research Area	Type	Objectives	Approach
+Materials Science	Ground Investigation	Micromechanics‑Based Modeling of Cement Solidified in the Microgravity aimed to advance knowledge of the mechanical properties of cement binders formed in reduced gravity by leveraging microgravity ma...	In this work, the micromechanics analysis code with generalized method of cells (MAC/GMC) was used to predict the structure-property relationship of these unique cement samples. First, the sparse data...
+Highlights: PSI-174... NASA PSI grant... reduced gravity by leveraging microgravity materials data, such as SEM/BSE micrographs, available in the PSI... The experimental basis originated from the MICS investigation (PSI‑84 in the database), which conducted
+Investigation
+PSI-153
+
+Fabrication of Amorphous Metals in Space(FAMIS)
+
+Research Area	Type	Objectives	Approach
+Materials Science	Microgravity Investigation	The primary objective of this investigation was to understand the effect of microgravity processing on composition and microstructure evolution in metallic glass forming alloys or bulk metallic glass ...	The objective of the flight experiment is to process 12 samples of two glass-forming alloys (Vitreloy 106 and Zr48Cu47.5Al4Co0.5) in microgravity with three different volume fractions of W spheres (5%...
+Highlights: PSI-153
+Investigation
+PSI-138
+
+Pool Boiling Heat Transfer Mechanisms in Low Gravity: Numerical Experiments of MABE and NPBX Data
+
+Research Area	Type	Objectives	Approach
+Fluid Physics	Ground Investigation	The primary objectives for this PSI grant include establishing a deeper mechanistic understanding of nucleate boiling under low-gravity conditions by conducting high-fidelity numerical simulations tha...	The project approach was to use validated high-fidelity Direct Numerical Simulation (DNS) ground-based computational simulations to numerically reproduce MABE- and NPBX-like boiling environments over ...
+Highlights: PSI-138... PSI-85 PSI-81... National Aeronautics and Space Administration (NASA) PSI grant... The primary objectives for this PSI grant include establishing a deeper mechanistic understanding of
+Investigation
+PSI-187
+
+Plant Water Management(PWM)
+
+Research Area	Type	Objectives	Approach
+Fluid Physics	Microgravity Investigation	The primary objectives of the Plant Water Management (PWM) experiments were to: a) Experimentally characterize and validate the use of passive capillary and geometric control for plant watering in m...	PWM employed passive capillary-based fluidic systems to deliver water and nutrients to plant root zones under microgravity aboard the ISS. Growth modules were designed with controlled channel geometri...
+Highlights: PSI-187
+Investigation
+PSI-189
+
+Validation of a CFD Model for Gas-Liquid Flows in Packed Bed Reactors to Enable Thermo-Fluid Analysis in Microgravity
+
+Research Area	Type	Objectives	Approach
+Fluid Physics	Ground Investigation	1. Develop and validate computational models for gas-liquid two-phase flow in porous media under microgravity using the PBRE (Packed Bed Reactor Experiment) flight data available in Physical Sciences...	In this grant, our approach combined high-fidelity simulations with reduced-order modeling to better understand and predict two-phase gas-liquid flows through packed bed reactors in microgravity. We b...
+Highlights: PSI-189... NASA PSI grant... using the PBRE (Packed Bed Reactor Experiment) flight data available in Physical Sciences Informatics (PSI... These simulations were validated using PBRE imagery and pressure data available in PSI.
+Investigation
+PSI-182
+
+Colloidal gels: Aging in microgravity, Structure of highly polydisperse gels
+
+Research Area	Type	Objectives	Approach
+Complex Fluids - Soft Matter	Ground Investigation	Data are from two projects: one related to aging, one related to polydispersity. The first project has data under folders with a name containing AGING. The second has data under folders with a name...	Project 1: We studied colloidal gels using the data from the Advanced Colloids Experiment-Microscopy-1 (ACE-M1) experiments. Colloidal gels are formed from sticky micron-sized solid particles in a liq...
+Highlights: PSI-182... PSI-13... National Aeronautics and Space Administration (NASA) PSI Grant
+Investigation
+PSI-178
+
+The origin of fragility in high-temperature oxide liquids - towards fabrication of novel non-equilibrium oxides(ELF-6 PRONTO)
+
+Research Area	Type	Objectives	Approach
+Materials Science	Microgravity Investigation	This project investigated the high-temperature thermophysical properties of molten metal oxides, with a particular focus on molten titanates. These property measurements were used to establish correla...	Density, thermal expansion, viscosity, and surface tension of molten oxides were measured using the Electrostatic Levitation Furnace (ELF) onboard the ISS. Measurements included silhouette imaging and...
+Highlights: PSI-178
+Investigation
+PSI-190
+
+Particle Engulfment and Pushing By Solidifying Interfaces(PEP)
+
+Research Area	Type	Objectives	Approach
+Materials Science	Microgravity Investigation	The major scientific objectives of this investigation were as follows: · to enhance the fundamental understanding of dynamics of insoluble particles at the solid-liquid interface; · to obtain experime...	The experimental approach was to perform directional solidification experiments with a pure metal, aluminum, doped with low volume fraction of insoluble particles, ZrO2. These experiments were carried...
+Highlights: PSI-190
+Investigation
+PSI-169
+
+Advanced Colloids Experiment-Nanoparticle Haloing(ACE-T12)
+
+Research Area	Type	Objectives	Approach
+Complex Fluids - Soft Matter	Microgravity Investigation	Nanoparticle Haloing (NPH) is a colloidal stabilization technique that has been discovered relatively recently. In NPH, highly charged nanoparticles are used to stabilize much larger (by 2 orders of ...	The ACE-T12 experiment utilizes the Fluids Integrated Rack (FIR) and the Light Microscopy Module (LMM). The FIR is built to accommodate a wide range of experiments. Accordingly, the ACE-T12 experimen...
+Highlights: PSI-169
+Investigation
+PSI-159
+
+Advanced Combustion via Microgravity Experiments / Cool Flames Investigation with Gases(ACME CFI-G)
+
+Research Area	Type	Objectives	Approach
+Combustion Science	Microgravity Investigation	1. Plan and support flight testing on the International Space Station (ISS). 2. Determine the conditions for which cool diffusion flames occur for propane, n-butane, and n-pentane; normal and inverse ...	Perform spherical diffusion flame tests aboard the International Space Station. Consider multiple fuels, a range of reactant dilutions, flow rates, and pressures for normal and inverse convection dire...
+Highlights: PSI-159
+Investigation
+PSI-10
+
+Advanced Combustion via Microgravity Experiments / Flame Design(ACME/Flame Design)
+
+Research Area	Type	Objectives	Approach
+Combustion Science	Microgravity Investigation	The primary objectives of this flight experiment are: A. Obtain soot-inception limits of quasi-steady normal and inverse spherical diffusion flames as functions of flow rate, Zst, amount of inert (N2 ...	Perform spherical diffusion flame tests in drop towers and aboard the International Space Station. Consider a broad range of reactant dilutions, flow rates and pressures for normal and inverse convect...
+Highlights: PSI-10
+Investigation
+PSI-62
+
+Concurrent Flame Spread Modeling using Flamelet Generated Manifolds in Microgravity with Comparison to BASS Experiments using Two-Color Tomography
+
+Research Area	Type	Objectives	Approach
+Combustion Science	Ground Investigation	The objective of this research was to develop and validate new flamelet generated manifold (FGM) modeling techniques for concurrent flame spread in microgravity. Concurrent flame spread presented one ...	The approach combined high-resolution computational modeling with experimental validation to study concurrent flame spread in microgravity. A previously developed computational framework was employed...
+Highlights: PSI-62... PSI-25 PSI-26... NASA PSI grant... To overcome these shortcomings, this PSI grant advanced the use of an unsteady flamelet generated manifold... Experimental imagery found in PSI from the BASS and BASS-II investigations was post-processed using newly
+Investigation
+PSI-188
+
+Advanced Colloids Experiment-Temperature 4(ACE-T4)
+
+Research Area	Type	Objectives	Approach
+Complex Fluids - Soft Matter	Microgravity Investigation	Original Objective: The ACE-T4 experiments were designed to explore the disorder-induced transformation between a crystal and a glass. The experiments introduced disorder by added colloidal dopants in...	The ACE-T4 experiment used confocal microscopy to observe the gels over a range of particle packing-fractions (temperatures), using pure, monodisperse poly(N -isopropylacrylamide) (pNIPA) particles in...
+Highlights: PSI-188
+Investigation
+PSI-60
+
+Computational and Experimental Analysis of SPICE Data Sets
+
+Research Area	Type	Objectives	Approach
+Combustion Science	Ground Investigation	This ground investigation sought to increase understanding of the issues that control the large discrepancy between soot formation in 1g and in 0g flames. The objective of this investigation was to ...	The approach was to combine image processing, experimental diagnostics, and detailed soot modeling. Raw Nikon NEF images were decoded into three color channels and analyzed using color-ratio pyrometr...
+Highlights: PSI-60... PSI-107... National Aeronautics and Space Administration (NASA) PSI grant... distributions and soot volume fractions from the Smoke Point in Coflow Experiment (SPICE) data available in PSI
+Investigation
+PSI-191
+
+Advanced Colloids Experiment-Temperature 5(ACE-T5)
+
+Research Area	Type	Objectives	Approach
+Complex Fluids - Soft Matter	Microgravity Investigation	The overarching goal of the project was to gain a better fundamental understanding of the relationship between bijel morphology, rheology, mechanical stability, and processability through combined gro...	Mixtures of propylene glycol/nitroethane (PG/NE) at their critical composition were prepared. Partially hydrophobic silica particles were suspended in the PG/NE mixture and the suspensions were filled...
+Highlights: PSI-191
+Investigation
+PSI-165
+
+Advanced Colloids Experiment -Temperature controlled- 2(ACE-T2)
+
+Research Area	Type	Objectives	Approach
+Complex Fluids - Soft Matter	Microgravity Investigation	The objective of this experiment is the investigation of the assembly of complex structures from micron-scale colloidal particles interacting via tunable attractive interactions. Regulating temperatur...	The ACE-T2 experiment utilizes the Fluids Integrated Rack (FIR) and the Light Microscopy Module (LMM). Accordingly, the ACE-T2 experiment will use a camera which scans at 30 frames per second of confo...
+Highlights: PSI-165
+Investigation
+PSI-168
+
+Advanced Colloids Experiment - Aging Dynamics and Stress-Relaxation in Colloidal Gels Studied in Microgravity(ACE-T10)
+
+Research Area	Type	Objectives	Approach
+Complex Fluids - Soft Matter	Microgravity Investigation	Colloidal stability is critical to soft matter systems, especially to consumer products. These structures change in time, by processes know as coarsening - meaning the spacing between particles compac...	The ACE-T10 experiment exploited the Fluids Integrated Rack (FIR) and the Light Microscopy Module (LMM). The Light Microscopy Module (LMM) is an automated microscope. It permitted flexible imaging (e....
+Highlights: PSI-168
+Investigation
+PSI-167
+
+Advanced Colloids Experiment - Imaging, Folding and Assembly of Colloidal Molecules(ACE-T9)
+
+Research Area	Type	Objectives	Approach
+Complex Fluids - Soft Matter	Microgravity Investigation	In ACE-T9, the imaging capability, folding dynamics, and assembly behavior of linear colloidal chains, colloidal dimers, and lock-and-key particles were studied by the combination of a proper design o...	The imaging goal is to observe (1) real-time and three-dimensional particle centroid positions of colloidal chains over both short (30 minutes) and long period (one week); (2) assembled structures, cr...
+Highlights: PSI-167
+Investigation
+PSI-119
+
+Enhanced Particle Tracking in STDC Data and Its Industrial Application of Marangoni Convection
+
+Research Area	Type	Objectives	Approach
+Fluid Physics	Ground Investigation	The primary objective this grant was to extract and understand the detailed thermo-fluid mechanics of the original NASA Surface Tension Driven Convection Experiment (STDCE-1) performed in microgravity...	The approach combined archival microgravity data analysis, computational modeling, and ground experiments to study surface tension driven convection (STDC). Video data from the original NASA STDCE-1 e...
+Highlights: PSI-119... PSI-108 PSI-109... National Aeronautics and Space Administration (NASA) PSI Grant... The study aims to revitalize the original video data found in PSI by applying advanced Particle Image... These objectives ultimately support both NASA’s PSI solicitation by expanding the scientific return
+Investigation
+PSI-66
+
+Dynamic Response of Particle-Filled Polymeric Fluids in Flows with Complex Lagrangian Time Histories
+
+Research Area	Type	Objectives	Approach
+Complex Fluids - Soft Matter	Ground Investigation	The primary objective of this ground investigation is to exploit the unique flight data from the Shear History Extensional Rheology (SHERE, SHERE-II, SHERE-R) investigations to better understand the d...	The investigation combines numerical simulations, theoretical modeling, and SHERE flight data validation. The SHERE experiments measured transient extensional responses of dilute particle suspensions ...
+Highlights: PSI-66... PSI-103 PSI-105... NASA PSI grant... Together, this multi-method approach bridges PSI experimental data with first-principles rheological
+Investigation
+PSI-181
+
+Structure and Properties of Pb-Sn and Pb-free Sn-Ag-Cu Solders Produced in Terrestrial vs. Microgravity Environments under Extremes of Elevated and Cryo Temperatures
+
+Research Area	Type	Objectives	Approach
+Materials Science	Ground Investigation	This study addresses the reliability of solder joints in space by pursuing two principal objectives: (1) Characterization of solder-joint formation under microgravity conditions aboard the Internation...	The study examined three distinct solder alloys: the ISSI lead-based (40Pb-60Sn) composition, an off-eutectic 50Pb-50Sn formulation, and a lead-free alloy consisting of 95.5Sn-3.8Ag-0.7Cu. Microstruct...
+Highlights: PSI-181... PSI-77... NASA PSI grant
+Investigation
+PSI-177
+
+Investigating the Structure of Paramagnetic Aggregates from Colloidal Emulsions - 4(InSPACE-4)
+
+Research Area	Type	Objectives	Approach
+Complex Fluids - Soft Matter	Microgravity Investigation	The overall objective of the InSPACE-4 investigation was to study the effects of particle shape and toggle duty cycle on the phase separation kinetics of particles in toggled fields. Three specific ob...	This ISS investigation was conducted using magnetic prolate ellipsoids with aspect ratios ranging from 2:1 to 4:1. Experiments involving spheres was also be conducted for comparison purposes. The sam...
+Highlights: PSI-177... PSI-74 PSI-75 PSI-76
+Investigation
+PSI-186
+
+Coupled Growth in Hypermonotectics(CGH)
+
+Research Area	Type	Objectives	Approach
+Materials Science	Microgravity Investigation	The overall objective of the Coupled Growth in Hypermonotectics is to understand the fundamental physics controlling solidification in immiscible alloy systems. Specific experimental goals were (1) to...	The CGH experiment investigation flew aboard the Life and Microgravity Spacelab (LMS) mission during the summer of 1996. Processing conditions were controlled in an attempt to force the production of ...
+Highlights: PSI-186
+Items per page:
+25
+1 – 25 of 133
+CONTACTS
+NASA Official: Jonathan Galazka
+SITE INFORMATION
+ NASA Privacy Policy and Notices
+OTHER RESOURCES
+ PSI
+ NASA BPS
+NASA | No Fear Act | FOIA | USA.gov | Accessibility
