@@ -125,7 +125,7 @@ export function ExportCenterPage() {
                 <CardHeader className="px-5 pb-4 pt-5">
                   <div className="flex items-start justify-between gap-3">
                     <div className="flex items-center gap-3">
-                      <div className="grid size-10 place-items-center rounded-lg border border-border/70 bg-muted/40 text-primary">
+                      <div className="grid size-10 place-items-center rounded-lg border border-primary/20 bg-primary/10 text-primary">
                         <Icon className="size-5" aria-hidden="true" />
                       </div>
                       <div>
@@ -149,7 +149,7 @@ export function ExportCenterPage() {
                       </li>
                     ))}
                   </ul>
-                  <p className="mt-4 rounded-md border border-border/70 bg-muted/30 px-3 py-2 font-mono text-[11px] text-muted-foreground">
+                  <p className="mt-4 rounded-md border border-border/70 bg-secondary/40 px-3 py-2 font-mono text-[11px] text-muted-foreground">
                     {item.endpoint}
                   </p>
                 </CardContent>

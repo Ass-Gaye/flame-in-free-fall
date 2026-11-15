@@ -368,7 +368,7 @@ export function InvestigationsPage() {
         </div>
 
         {/* Active Filters & Actions Subheader */}
-        <div className="flex flex-col gap-2 border-b border-border/60 bg-muted/20 px-3.5 py-2 text-xs text-muted-foreground sm:flex-row sm:items-center sm:justify-between sm:px-4">
+        <div className="flex flex-col gap-2 border-b border-border/60 bg-secondary/30 px-3.5 py-2 text-xs text-muted-foreground sm:flex-row sm:items-center sm:justify-between sm:px-4">
           <div className="flex flex-wrap items-center gap-1.5">
             <Filter className="size-3 text-muted-foreground/70" aria-hidden="true" />
             {activeFilters.length === 0 ? (
@@ -379,7 +379,7 @@ export function InvestigationsPage() {
                   key={filter.key}
                   type="button"
                   onClick={() => applyFilter(filter.key, '')}
-                  className="inline-flex items-center gap-1 rounded border border-border/80 bg-background/80 px-2 py-0.5 font-mono text-[10.5px] text-foreground outline-none transition-colors hover:bg-muted"
+                  className="inline-flex items-center gap-1 rounded border border-border/80 bg-secondary/60 px-2 py-0.5 font-mono text-[10.5px] text-foreground outline-none transition-colors hover:border-primary/40 hover:bg-secondary/90"
                   aria-label={`Remove filter ${filter.label}`}
                 >
                   {filter.label}
@@ -520,7 +520,7 @@ export function InvestigationsPage() {
                   NASA PSI investigations. Sorted by {sortOptions.find((option) => option.value === sort)?.label ?? sort}.
                 </caption>
                 <thead>
-                  <tr className="border-b border-border/70 bg-muted/40 font-mono text-[10.5px] uppercase tracking-wider text-muted-foreground">
+                  <tr className="border-b border-border/70 bg-secondary/50 font-mono text-[10.5px] uppercase tracking-wider text-muted-foreground">
                     <th scope="col" className="px-3.5 py-2.5 font-medium sm:px-4 w-28">
                       PSI ID
                     </th>
@@ -564,7 +564,7 @@ export function InvestigationsPage() {
                   {data.items.map((item) => (
                     <tr
                       key={item.investigation_id}
-                      className="align-middle transition-colors hover:bg-muted/30"
+                      className="align-middle transition-colors hover:bg-secondary/35"
                     >
                       <td className="px-3.5 py-2.5 sm:px-4">
                         <Link

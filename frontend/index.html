@@ -24,6 +24,8 @@
           var prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches
           var dark = stored === 'dark' || ((!stored || stored === 'system') && prefersDark)
           document.documentElement.classList.toggle('dark', dark)
+          document.documentElement.setAttribute('data-theme', dark ? 'dark' : 'light')
+          document.documentElement.style.colorScheme = dark ? 'dark' : 'light'
         } catch (error) {
           // Keep the dark fallback set on <html>.
         }

@@ -242,7 +242,7 @@ export function AssistantPage() {
                 className={msg.role === 'user' ? 'flex justify-end gap-3' : 'flex gap-3'}
               >
                 {msg.role === 'assistant' && (
-                  <div className="grid size-8 shrink-0 place-items-center rounded-lg border border-border/70 bg-muted/40">
+                  <div className="grid size-8 shrink-0 place-items-center rounded-lg border border-primary/30 bg-primary/10">
                     <Bot className="size-4 text-primary" aria-hidden="true" />
                   </div>
                 )}
@@ -250,10 +250,10 @@ export function AssistantPage() {
                 <div
                   className={
                     msg.role === 'user'
-                      ? 'max-w-[80%] rounded-lg rounded-tr-sm border border-primary/20 bg-primary/10 px-4 py-3 text-sm text-foreground'
+                      ? 'max-w-[80%] rounded-lg rounded-tr-sm border border-primary/25 bg-primary/12 px-4 py-3 text-sm text-foreground'
                       : msg.isError
                         ? 'max-w-[85%] rounded-lg rounded-tl-sm border border-destructive/30 bg-destructive/10 px-4 py-3 text-sm text-destructive'
-                        : 'max-w-[85%] rounded-lg rounded-tl-sm border border-border/70 bg-muted/30 px-4 py-3 text-sm text-foreground space-y-3'
+                        : 'max-w-[85%] rounded-lg rounded-tl-sm border border-border/80 bg-secondary/50 px-4 py-3 text-sm text-foreground space-y-3'
                   }
                 >
                   <p className="whitespace-pre-wrap leading-relaxed">{msg.content}</p>
@@ -270,7 +270,7 @@ export function AssistantPage() {
                           <Link
                             key={cite.investigation_id}
                             to={`/investigations/${encodeURIComponent(cite.investigation_id)}`}
-                            className="group block rounded-md border border-border/70 bg-background/80 p-2.5 transition hover:border-primary/50 hover:bg-muted/40"
+                            className="group block rounded-md border border-border/70 bg-secondary/40 p-2.5 transition hover:border-primary/50 hover:bg-secondary/70"
                           >
                             <div className="flex items-center justify-between gap-1.5 pb-1">
                               <span className="font-mono text-xs font-semibold text-primary group-hover:underline">

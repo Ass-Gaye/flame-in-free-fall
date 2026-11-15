@@ -85,8 +85,8 @@ function LibraryTabButton({
       className={cn(
         'inline-flex items-center gap-1.5 rounded-md px-3 py-1.5 text-sm font-medium outline-none transition-colors focus-visible:ring-[3px] focus-visible:ring-ring/40',
         selected
-          ? 'bg-background text-foreground shadow-xs'
-          : 'text-muted-foreground hover:text-foreground',
+          ? 'bg-primary/15 text-primary font-semibold shadow-xs'
+          : 'text-muted-foreground hover:bg-secondary/50 hover:text-foreground',
       )}
     >
       <Icon className="size-3.5" aria-hidden="true" />
@@ -218,7 +218,7 @@ export function LibraryPage() {
             <div
               role="tablist"
               aria-label="Library sections"
-              className="flex w-fit gap-1 rounded-lg border border-border/70 bg-muted/30 p-1"
+              className="flex w-fit gap-1 rounded-lg border border-border/80 bg-secondary/50 p-1"
             >
               {tabs.map((item) => (
                 <LibraryTabButton
@@ -452,7 +452,7 @@ export function LibraryPage() {
                               key={item.investigation_id}
                               to={`/investigations/${item.investigation_id}`}
                               title={item.title}
-                              className="inline-flex rounded-full border border-border/70 bg-muted/40 px-2 py-0.5 font-mono text-[10px] text-foreground underline-offset-4 transition-colors hover:bg-muted hover:underline"
+                              className="inline-flex rounded-full border border-border/80 bg-secondary/60 px-2 py-0.5 font-mono text-[10px] text-foreground underline-offset-4 transition-colors hover:border-primary/40 hover:bg-secondary/90 hover:text-primary hover:underline"
                             >
                               {item.investigation_id}
                             </Link>

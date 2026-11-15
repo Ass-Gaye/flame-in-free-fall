@@ -80,7 +80,7 @@ export function ResearchGaps() {
         {observedGaps.map((gap, index) => (
           <div
             key={gap.id}
-            className="rounded-lg border border-border/70 bg-card p-4 space-y-3 transition-colors hover:border-primary/40"
+            className="rounded-lg border border-border/70 bg-card/90 p-4 space-y-3 transition-colors hover:border-primary/40"
           >
             <div className="flex items-start justify-between gap-3">
               <div className="space-y-1">
@@ -99,7 +99,7 @@ export function ResearchGaps() {
             </div>
 
             <div className="grid gap-2.5 sm:grid-cols-2 text-xs">
-              <div className="rounded-md border border-border/40 bg-muted/20 p-2.5 space-y-1">
+              <div className="rounded-md border border-border/50 bg-secondary/40 p-2.5 space-y-1">
                 <div className="flex items-center gap-1.5 font-semibold text-foreground text-[11px] uppercase tracking-wider">
                   <CheckCircle2 className="size-3 text-emerald-500" />
                   Dataset Evidence
@@ -109,7 +109,7 @@ export function ResearchGaps() {
                 </p>
               </div>
 
-              <div className="rounded-md border border-border/40 bg-muted/20 p-2.5 space-y-1">
+              <div className="rounded-md border border-border/50 bg-secondary/40 p-2.5 space-y-1">
                 <div className="flex items-center gap-1.5 font-semibold text-foreground text-[11px] uppercase tracking-wider">
                   <AlertTriangle className="size-3 text-amber-500" />
                   Known Limitations

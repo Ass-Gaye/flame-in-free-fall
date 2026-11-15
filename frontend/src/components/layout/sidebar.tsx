@@ -39,32 +39,32 @@ export function SidebarNav({ onNavigate }: { onNavigate?: () => void }) {
                         onClick={onNavigate}
                         className={({ isActive }) =>
                           cn(
-                            'group relative flex items-center gap-2.5 rounded-lg px-2.5 py-1.5 text-xs font-medium outline-none transition-colors',
+                            'group relative flex items-center gap-2.5 rounded-md px-2.5 py-2 text-xs font-medium outline-none transition-all',
                             'focus-visible:ring-2 focus-visible:ring-ring/40',
                             isActive
-                              ? 'bg-primary/10 text-primary font-semibold dark:bg-primary/15'
-                              : 'text-sidebar-foreground/70 hover:bg-sidebar-accent hover:text-sidebar-foreground',
+                              ? 'bg-primary/12 text-primary font-semibold shadow-2xs dark:bg-primary/15'
+                              : 'text-sidebar-foreground/75 hover:bg-sidebar-accent hover:text-sidebar-foreground',
                           )
                         }
                       >
                         {({ isActive }) => (
                           <>
+                            {isActive ? (
+                              <span
+                                aria-hidden="true"
+                                className="absolute inset-y-1.5 left-0 w-0.5 rounded-r bg-primary"
+                              />
+                            ) : null}
                             <Icon
                               className={cn(
                                 'size-4 shrink-0 transition-colors',
                                 isActive
                                   ? 'text-primary'
-                                  : 'text-sidebar-foreground/50 group-hover:text-sidebar-foreground',
+                                  : 'text-sidebar-foreground/60 group-hover:text-sidebar-foreground',
                               )}
                               aria-hidden="true"
                             />
                             <span className="truncate">{item.label}</span>
-                            {isActive ? (
-                              <span
-                                aria-hidden="true"
-                                className="absolute inset-y-1.5 right-1.5 w-1 rounded-full bg-primary"
-                              />
-                            ) : null}
                           </>
                         )}
                       </NavLink>

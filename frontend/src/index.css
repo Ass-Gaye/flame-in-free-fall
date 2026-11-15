@@ -52,46 +52,46 @@
 :root {
   --radius: 0.625rem;
 
-  /* Global NASA-inspired application background */
-  --app-bg: #071426;
-  --surface: rgba(7, 17, 31, 0.94);
-  --surface-secondary: rgba(13, 28, 46, 0.92);
+  /* Global NASA-inspired application tokens */
+  --app-bg: #050d19;
+  --surface: #0a1727;
+  --surface-secondary: #10243a;
   --text-primary: #f4f8ff;
   --text-secondary: #9aadc4;
-  --border-color: rgba(148, 178, 210, 0.13);
+  --border-color: rgba(154, 173, 196, 0.16);
   --accent: #ff642d;
 
-  --background: transparent;
-  --foreground: oklch(0.16 0.015 250);
-  --card: var(--surface);
-  --card-foreground: oklch(0.16 0.015 250);
+  --background: var(--app-bg);
+  --foreground: var(--text-primary);
+  --card: rgba(10, 23, 39, 0.92);
+  --card-foreground: var(--text-primary);
   --popover: var(--surface-secondary);
-  --popover-foreground: oklch(0.16 0.015 250);
-  --primary: oklch(0.58 0.20 38);
-  --primary-foreground: oklch(0.99 0.002 85);
-  --secondary: oklch(0.955 0.004 250);
-  --secondary-foreground: oklch(0.24 0.015 250);
-  --muted: oklch(0.96 0.004 250);
-  --muted-foreground: oklch(0.48 0.015 250);
-  --accent-foreground: oklch(0.25 0.05 40);
-  --destructive: oklch(0.55 0.22 25);
-  --destructive-foreground: oklch(0.99 0.002 85);
+  --popover-foreground: var(--text-primary);
+  --primary: #ff642d;
+  --primary-foreground: #ffffff;
+  --secondary: var(--surface-secondary);
+  --secondary-foreground: var(--text-primary);
+  --muted: rgba(16, 36, 58, 0.65);
+  --muted-foreground: var(--text-secondary);
+  --accent-foreground: #ffffff;
+  --destructive: #ef4444;
+  --destructive-foreground: #ffffff;
   --border: var(--border-color);
-  --input: oklch(0.88 0.006 250);
-  --ring: oklch(0.58 0.20 38);
+  --input: rgba(16, 36, 58, 0.85);
+  --ring: #ff642d;
 
-  --chart-1: oklch(0.60 0.20 38);
-  --chart-2: oklch(0.72 0.16 75);
-  --chart-3: oklch(0.62 0.12 195);
-  --chart-4: oklch(0.56 0.12 265);
-  --chart-5: oklch(0.64 0.16 15);
+  --chart-1: #ff642d;
+  --chart-2: #38bdf8;
+  --chart-3: #fbbf24;
+  --chart-4: #818cf8;
+  --chart-5: #34d399;
 
-  --sidebar: var(--surface);
-  --sidebar-foreground: oklch(0.28 0.015 250);
+  --sidebar: rgba(10, 23, 39, 0.95);
+  --sidebar-foreground: var(--text-primary);
   --sidebar-primary: var(--primary);
-  --sidebar-primary-foreground: var(--primary-foreground);
-  --sidebar-accent: oklch(0.94 0.008 250);
-  --sidebar-accent-foreground: oklch(0.16 0.015 250);
+  --sidebar-primary-foreground: #ffffff;
+  --sidebar-accent: rgba(16, 36, 58, 0.85);
+  --sidebar-accent-foreground: var(--text-primary);
   --sidebar-border: var(--border-color);
   --sidebar-ring: var(--ring);
 }
@@ -101,44 +101,44 @@
   --radius: 0.625rem;
 
   --app-bg: #050d19;
-  --surface: rgba(5, 13, 25, 0.94);
-  --surface-secondary: rgba(10, 23, 39, 0.93);
+  --surface: #0a1727;
+  --surface-secondary: #10243a;
   --text-primary: #f4f8ff;
   --text-secondary: #9aadc4;
-  --border-color: rgba(148, 178, 210, 0.13);
+  --border-color: rgba(154, 173, 196, 0.16);
+  --accent: #ff642d;
 
-  --background: transparent;
-  --foreground: oklch(0.96 0.004 250);
-  --card: var(--surface);
-  --card-foreground: oklch(0.96 0.004 250);
+  --background: var(--app-bg);
+  --foreground: var(--text-primary);
+  --card: rgba(10, 23, 39, 0.92);
+  --card-foreground: var(--text-primary);
   --popover: var(--surface-secondary);
-  --popover-foreground: oklch(0.96 0.004 250);
-  --primary: oklch(0.70 0.19 42);
-  --primary-foreground: oklch(0.12 0.02 40);
-  --secondary: oklch(0.22 0.012 255);
-  --secondary-foreground: oklch(0.92 0.004 250);
-  --muted: oklch(0.20 0.012 255);
-  --muted-foreground: oklch(0.64 0.012 255);
-  --accent: oklch(0.23 0.022 45);
-  --accent-foreground: oklch(0.92 0.015 50);
-  --destructive: oklch(0.62 0.20 25);
-  --destructive-foreground: oklch(0.98 0.002 85);
+  --popover-foreground: var(--text-primary);
+  --primary: #ff642d;
+  --primary-foreground: #ffffff;
+  --secondary: var(--surface-secondary);
+  --secondary-foreground: var(--text-primary);
+  --muted: rgba(16, 36, 58, 0.65);
+  --muted-foreground: var(--text-secondary);
+  --accent-foreground: #ffffff;
+  --destructive: #ef4444;
+  --destructive-foreground: #ffffff;
   --border: var(--border-color);
-  --input: oklch(0.26 0.012 255);
-  --ring: oklch(0.70 0.19 42);
+  --input: rgba(16, 36, 58, 0.85);
+  --ring: #ff642d;
 
-  --chart-1: oklch(0.72 0.18 42);
-  --chart-2: oklch(0.80 0.15 78);
-  --chart-3: oklch(0.72 0.11 195);
-  --chart-4: oklch(0.68 0.12 265);
-  --chart-5: oklch(0.70 0.15 15);
+  --chart-1: #ff642d;
+  --chart-2: #38bdf8;
+  --chart-3: #fbbf24;
+  --chart-4: #818cf8;
+  --chart-5: #34d399;
 
-  --sidebar: var(--surface);
-  --sidebar-foreground: oklch(0.88 0.008 250);
+  --sidebar: rgba(10, 23, 39, 0.95);
+  --sidebar-foreground: var(--text-primary);
   --sidebar-primary: var(--primary);
-  --sidebar-primary-foreground: var(--primary-foreground);
-  --sidebar-accent: oklch(0.18 0.014 255);
-  --sidebar-accent-foreground: oklch(0.98 0.004 250);
+  --sidebar-primary-foreground: #ffffff;
+  --sidebar-accent: rgba(16, 36, 58, 0.85);
+  --sidebar-accent-foreground: var(--text-primary);
   --sidebar-border: var(--border-color);
   --sidebar-ring: var(--ring);
 }
@@ -146,14 +146,46 @@
 [data-theme="light"],
 html:not(.dark) {
   --app-bg: #eaf1f8;
-  --surface: rgba(248, 251, 255, 0.94);
-  --surface-secondary: rgba(235, 243, 251, 0.95);
+  --surface: #f8fbff;
+  --surface-secondary: #ebf3fb;
   --text-primary: #14283e;
   --text-secondary: #61758c;
-  --border-color: rgba(37, 67, 99, 0.13);
-  --card: var(--surface);
-  --sidebar: var(--surface);
+  --border-color: rgba(97, 117, 140, 0.20);
+  --accent: #e95b27;
+
+  --background: var(--app-bg);
+  --foreground: var(--text-primary);
+  --card: rgba(248, 251, 255, 0.94);
+  --card-foreground: var(--text-primary);
   --popover: var(--surface-secondary);
+  --popover-foreground: var(--text-primary);
+  --primary: #e95b27;
+  --primary-foreground: #ffffff;
+  --secondary: var(--surface-secondary);
+  --secondary-foreground: var(--text-primary);
+  --muted: rgba(235, 243, 251, 0.85);
+  --muted-foreground: var(--text-secondary);
+  --accent-foreground: #ffffff;
+  --destructive: #dc2626;
+  --destructive-foreground: #ffffff;
+  --border: var(--border-color);
+  --input: rgba(248, 251, 255, 0.95);
+  --ring: #e95b27;
+
+  --chart-1: #e95b27;
+  --chart-2: #0284c7;
+  --chart-3: #d97706;
+  --chart-4: #4f46e5;
+  --chart-5: #059669;
+
+  --sidebar: rgba(248, 251, 255, 0.96);
+  --sidebar-foreground: var(--text-primary);
+  --sidebar-primary: var(--primary);
+  --sidebar-primary-foreground: #ffffff;
+  --sidebar-accent: rgba(235, 243, 251, 0.92);
+  --sidebar-accent-foreground: var(--text-primary);
+  --sidebar-border: var(--border-color);
+  --sidebar-ring: var(--ring);
 }
 
 body {
@@ -161,7 +193,7 @@ body {
   color: var(--text-primary);
 }
 
-/* Fixed NASA space background */
+/* Fixed NASA space background with translucent overlay */
 body::before {
   content: "";
   position: fixed;
@@ -171,35 +203,46 @@ body::before {
 
   background:
     linear-gradient(
-      rgba(4, 13, 27, 0.84),
-      rgba(4, 13, 27, 0.91)
+      rgba(5, 13, 25, 0.86),
+      rgba(5, 13, 25, 0.94)
     ),
     url("/images/nasa-orbit-bg.png");
 
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
+  background-attachment: fixed;
 }
 
 [data-theme="light"] body::before,
 html:not(.dark) body::before {
   background:
     linear-gradient(
-      rgba(238, 245, 252, 0.87),
-      rgba(238, 245, 252, 0.94)
+      rgba(234, 241, 248, 0.88),
+      rgba(234, 241, 248, 0.95)
     ),
     url("/images/nasa-orbit-bg.png");
 
   background-size: cover;
   background-position: center;
+  background-repeat: no-repeat;
+  background-attachment: fixed;
 }
 
-.app-sidebar,
-.app-header,
+.app-sidebar {
+  background-color: var(--sidebar);
+  border-color: var(--sidebar-border);
+}
+
+.app-header {
+  background-color: var(--surface);
+  border-color: var(--border-color);
+}
+
 .dashboard-card,
 .research-panel {
-  background: var(--surface) !important;
-  color: var(--text-primary);
+  background-color: var(--card);
+  color: var(--card-foreground);
   border-color: var(--border-color);
 }
 

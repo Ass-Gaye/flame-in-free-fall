@@ -145,7 +145,7 @@ export function ResearchThemes() {
                   <Link
                     key={inv.id}
                     to={`/investigations/${encodeURIComponent(inv.id)}`}
-                    className="group inline-flex items-center gap-1.5 rounded-md border border-border/80 bg-background px-2.5 py-1 text-xs font-medium text-foreground transition-all hover:border-primary hover:text-primary"
+                    className="group inline-flex items-center gap-1.5 rounded-md border border-border/80 bg-secondary/40 px-2.5 py-1 text-xs font-medium text-foreground transition-all hover:border-primary/50 hover:bg-secondary/70 hover:text-primary"
                   >
                     <span className="font-mono text-primary font-bold">{inv.id}</span>
                     <span className="text-muted-foreground group-hover:text-primary">

@@ -183,8 +183,8 @@ export function SettingsPage() {
                       'flex flex-col items-start gap-2 rounded-lg border p-3 text-left outline-none transition-colors',
                       'focus-visible:ring-[3px] focus-visible:ring-ring/40',
                       selected
-                        ? 'border-primary/50 bg-primary/8'
-                        : 'border-border/70 bg-muted/20 hover:border-border hover:bg-muted/40',
+                        ? 'border-primary/50 bg-primary/10 shadow-2xs'
+                        : 'border-border/70 bg-secondary/35 hover:border-primary/30 hover:bg-secondary/60',
                     )}
                   >
                     <span
@@ -192,7 +192,7 @@ export function SettingsPage() {
                         'grid size-8 place-items-center rounded-md border',
                         selected
                           ? 'border-primary/40 bg-primary/15 text-primary'
-                          : 'border-border/70 bg-background text-muted-foreground',
+                          : 'border-border/70 bg-secondary/60 text-muted-foreground',
                       )}
                     >
                       <Icon className="size-4" aria-hidden="true" />

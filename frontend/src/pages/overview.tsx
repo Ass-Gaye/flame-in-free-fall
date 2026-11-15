@@ -437,7 +437,7 @@ export function OverviewPage() {
                 to={module.to}
                 className="group rounded-xl outline-none focus-visible:ring-2 focus-visible:ring-ring/40"
               >
-                <Card className="h-full border border-border/70 p-4 transition-all group-hover:border-primary/40 group-hover:bg-muted/20">
+                <Card className="h-full border border-border/70 p-4 transition-all group-hover:border-primary/40 group-hover:bg-secondary/40">
                   <div className="flex items-start justify-between gap-3">
                     <div className="flex items-center gap-3">
                       <div className="flex size-9 shrink-0 items-center justify-center rounded-lg border border-border/60 bg-muted/40 text-primary transition-colors group-hover:bg-primary/10">
@@ -480,19 +480,19 @@ export function OverviewPage() {
             </CardDescription>
           </CardHeader>
           <CardContent className="space-y-3 text-xs">
-            <div className="space-y-1 rounded-md border border-border/60 bg-muted/20 p-2.5">
+            <div className="space-y-1 rounded-lg border border-border/70 bg-secondary/35 p-3">
               <p className="font-semibold text-foreground">Direct Fire Safety</p>
               <p className="leading-relaxed text-muted-foreground">
                 Matches explicit fire safety, flame propagation, fuel ignition, combustion extinction, or smoke detection criteria.
               </p>
             </div>
-            <div className="space-y-1 rounded-md border border-border/60 bg-muted/20 p-2.5">
+            <div className="space-y-1 rounded-lg border border-border/70 bg-secondary/35 p-3">
               <p className="font-semibold text-foreground">Supporting Combustion</p>
               <p className="leading-relaxed text-muted-foreground">
                 Conducts microgravity droplet, gaseous, or solid fuel combustion science without explicit spacecraft fire protection objectives.
               </p>
             </div>
-            <div className="space-y-1 rounded-md border border-border/60 bg-muted/20 p-2.5">
+            <div className="space-y-1 rounded-lg border border-border/70 bg-secondary/35 p-3">
               <p className="font-semibold text-foreground">Peripheral Investigations</p>
               <p className="leading-relaxed text-muted-foreground">
                 Broader physical science studies (materials, biophysics, fluid mechanics) cataloged within NASA PSI.
