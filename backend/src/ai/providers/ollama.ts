@@ -101,17 +101,27 @@ export class OllamaProvider implements AiProvider {
           system: options.systemPrompt,
           prompt: options.userPrompt,
           stream: false,
+          think: false,
+          options: {
+            num_ctx: 4096,
+            num_predict: 512,
+            temperature: 0.2,
+          },
         }),
-        signal: AbortSignal.timeout(60000),
+        signal: AbortSignal.timeout(180000),
       })
 
       if (!response.ok) {
         throw new Error(`Ollama service returned HTTP status ${response.status}`)
       }
 
-      const data = (await response.json()) as { response?: string }
+      const data = (await response.json()) as { response?: string; thinking?: string }
+      const answer = (data.response && data.response.trim().length > 0)
+        ? data.response.trim()
+        : (data.thinking ?? '').trim()
+
       return {
-        answer: data.response ?? '',
+        answer,
         provider: this.name,
         model: this.model,
       }
