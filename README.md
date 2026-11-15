@@ -25,29 +25,53 @@ To make NASA's combustion and fire-related research easier to discover, understa
 - **Research Library:** Explore related NASA publications and available research documents.
 - **Export Center:** Export investigation records and research data in JSON and CSV formats.
 
-*These are planned capabilities. Their implementation status will be tracked in the project roadmap.*
+*Dashboard, investigation explorer, record pages, and the research library are
+live against the read-only API. Analytics, the AI assistant, and exports remain
+planned and are tracked in the project roadmap.*
 
 ## 📊 Research Dataset
 
 The project currently has a cleaned dataset containing **133 NASA PSI investigations**.
 
-| Classification | Investigations |
+| Research area | Investigations |
 |---|---:|
-| Direct relevance | 14 |
-| Supporting relevance | 11 |
-| Peripheral relevance | 108 |
+| Materials Science | 35 |
+| Complex Fluids - Soft Matter | 34 |
+| Fluid Physics | 27 |
+| Combustion Science | 24 |
+| Biophysics | 7 |
+| Fundamental Physics | 6 |
 | **Total** | **133** |
 
 Extraction status:
 
 - 129 successfully extracted.
-- 4 incompletely extracted.
+- 4 incompletely extracted (`PSI-34`, `PSI-165`, `PSI-168`, `PSI-184`).
 
-The dataset is maintained separately in the `NASA Fire Data/` directory.
+Relevance labels (a transparent, rule-based prioritisation aid):
 
-**Dataset source of truth:** `NASA Fire Data/merged_master_dataset.json`
+| Relevance | Investigations |
+|---|---:|
+| Direct | 10 |
+| Supporting | 14 |
+| Peripheral | 109 |
+| **Total** | **133** |
 
-Relevance classifications are research-prioritization labels, not scientific conclusions. Dataset statistics should be verified against the source JSON before being used in public-facing analysis.
+All 10 direct investigations are Spacecraft Fire Safety (SAFFIRE), BASS, FLEX, flame-spread modelling, or smoke/aerosol measurement experiments. The other 14 Combustion Science investigations are supporting; every record outside Combustion Science is peripheral.
+
+The dataset is stored in `nasa-fire-data/`.
+
+**Dataset source of truth:** `nasa-fire-data/psi_output/merged_master_dataset.json`
+
+A CSV copy is generated from the JSON at `nasa-fire-data/psi_output/merged_master_dataset.csv`. The two are kept in sync by the scripts below and checked by `validate_dataset.py`.
+
+Current data quality:
+
+- 131 of 133 records have a verified NASA PSI investigation DOI.
+- 22 records are enriched from ISA-Tab metadata archives (full objectives, approach, publications, contacts, funding).
+- 1,786 publication entries, de-duplicated, with 273 carrying their own DOI.
+- 10 direct, 14 supporting, and 109 peripheral relevance labels, each with a recorded score and an auditable reason.
+
 
 ## 🛠️ Planned Technology Stack
 
@@ -78,24 +102,47 @@ The AI must not invent scientific findings, publications, DOIs, or research stat
 
 ## 📁 Project Structure
 
-The planned project structure is:
+The current project structure is:
 
 ```text
 FLAME-IN-FREEFALL/
 │
-├── NASA Fire Data/
-│   └── merged_master_dataset.json
+├── nasa-fire-data/
+│   ├── psi_output/
+│   │   ├── merged_master_dataset.json   # source of truth
+│   │   ├── merged_master_dataset.csv    # generated copy
+│   │   └── PSI-*.txt                    # raw scraped pages
+│   ├── scrape_psi.py                    # Playwright scraper
+│   ├── merge_isa.py                     # ISA-Tab archive enrichment
+│   ├── normalize_dataset.py             # scraped-field repair
+│   ├── classify_relevance.py            # transparent relevance labels
+│   └── validate_dataset.py              # integrity checks
 │
-├── frontend/
+├── frontend/                            # React + Vite interface (Phase 3)
+│   ├── src/
+│   │   ├── lib/api.ts                   # typed API client
+│   │   └── types/api.ts
+│   ├── public/
+│   └── package.json
 │
-├── backend/
+├── backend/                             # Express + Prisma API (Phase 2)
+│   ├── prisma/
+│   │   ├── schema.prisma
+│   │   └── migrations/
+│   ├── src/
+│   │   ├── ingest/                      # validation + repeatable ingestion
+│   │   ├── routes/
+│   │   ├── services/
+│   │   └── server.ts
+│   ├── tests/
+│   └── package.json
 │
 ├── docs/
 │   └── PROJECT_CONTEXT_AND_ROADMAP.md
 │
+├── .env.example
 ├── .gitignore
-├── README.md
-└── package.json
+└── README.md
 ```
 
 The final structure may be refined after the initial architecture review.
@@ -110,16 +157,81 @@ This document is the main reference for understanding and continuing the project
 
 ## 💻 Development Setup
 
-The application is under development. Detailed installation and configuration instructions will be added as the architecture and implementation are established.
+The application is still under development. The data tooling can be run today:
 
-The initial development environment requires:
+```powershell
+# Once, from the repository root
+python -m venv nasa-fire-data/venv
+.\nasa-fire-data\venv\Scripts\pip install -r nasa-fire-data/requirements.txt
+.\nasa-fire-data\venv\Scripts\playwright install chromium
+
+# Enrich records from ISA-Tab archives (preview, then apply)
+.\nasa-fire-data\venv\Scripts\python nasa-fire-data\merge_isa.py --zip "<archive.zip>"
+.\nasa-fire-data\venv\Scripts\python nasa-fire-data\merge_isa.py --zip "<archive.zip>" --write
+
+# Repair scraped fields, label relevance, then verify the dataset
+.\nasa-fire-data\venv\Scripts\python nasa-fire-data\normalize_dataset.py --write
+.\nasa-fire-data\venv\Scripts\python nasa-fire-data\classify_relevance.py --review
+.\nasa-fire-data\venv\Scripts\python nasa-fire-data\classify_relevance.py --write
+.\nasa-fire-data\venv\Scripts\python nasa-fire-data\validate_dataset.py
+```
+
+`validate_dataset.py` exits non-zero on any integrity failure, so it can gate a build or a commit.
+
+The full application will additionally require:
 
 - Node.js and npm.
 - Git.
 - An appropriate code editor.
 - Ollama.
 - The `gemma4:e2b` model.
-- The project research dataset.
+
+### Frontend (Phase 3 live interface)
+
+```powershell
+cd frontend
+npm install
+npm run dev      # http://localhost:5173
+npm run build    # type-check + production build
+npm run lint     # oxlint
+npm test         # Vitest
+```
+
+Start the backend first: the overview, explorer, record pages, library, and
+settings panel read the live API. Missing values are labelled unavailable rather
+than filled with placeholder statistics, and every list view keeps its search,
+filter, sort, and page state in the URL. See `frontend/README.md` for the route
+map, data layer, and integrity rules.
+
+### Backend (Phase 2 read-only API)
+
+```powershell
+cd backend
+npm install
+Copy-Item .env.example .env
+npm run db:migrate    # create prisma/dev.db + generated Prisma client
+npm run db:ingest     # validate the JSON, then rebuild the database
+npm run dev           # http://localhost:3001
+npm test              # migrate + ingest if needed + Vitest
+```
+
+The API is read-only and exposes:
+
+```text
+GET /api/health
+GET /api/investigations
+GET /api/investigations/:id
+GET /api/statistics
+GET /api/filters
+GET /api/publications
+GET /api/documents
+```
+
+Search is `GET /api/investigations?q=...`; there is no separate search route.
+The backend records the dataset SHA-256 at ingestion time, keeps each original
+record in `raw_json`, and never writes to the source JSON. See
+`backend/README.md` for query parameters, integrity rules, and the PostgreSQL
+migration path.
 
 ## 👥 Collaboration
 
@@ -149,9 +261,23 @@ Scientific accuracy is a core requirement.
 
 ## 📌 Development Status
 
-<escape>🚧</escape> **Currently in project initialization and architecture planning.**
+**Phase 0 — data integrity and repository hygiene: complete.** The dataset is
+cleaned, enriched, relevance-labelled, and gated by `validate_dataset.py`.
 
-Implementation will proceed in clearly defined phases, with testing and review at each milestone.
+**Phase 1 — frontend foundation: complete.** The seven-page interface shell is
+routed, responsive, and reusable, with shared layout, state, and UI components.
+
+**Phase 2 — backend API: complete.** The validated dataset is ingested into
+SQLite through Prisma, exposed by a read-only Express API with search, filters,
+pagination, sorting, verified aggregates, and typed responses.
+
+**Phase 3 — dashboard and investigation explorer: complete.** The overview,
+explorer, record pages, and library read the live API. URL-backed search,
+filters, sorting, pagination, publication grouping, document listings, dataset
+provenance, and offline/error states are implemented and tested.
+
+**Next: Phase 4 — research analytics**, adding Recharts visualisations on top of
+the verified `/api/statistics` aggregates.
 
 ## 📄 License
 

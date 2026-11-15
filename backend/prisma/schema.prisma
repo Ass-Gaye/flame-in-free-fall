@@ -1,0 +1,124 @@
+// Prisma schema for the read-only NASA PSI research dataset.
+//
+// The JSON dataset is the source of truth. This database is generated from it
+// and can be deleted and rebuilt at any time.
+
+generator client {
+  provider = "prisma-client"
+  output   = "../src/generated/prisma"
+}
+
+datasource db {
+  provider = "sqlite"
+}
+
+model Investigation {
+  investigation_id String @id
+  title            String
+  url              String
+  research_area    String
+  project_type     String
+
+  objectives String
+  approach   String
+  hypothesis String
+  impacts    String
+  keywords   String
+  related    String
+
+  investigation_doi       String
+  scraper_doi_unverified  String
+
+  relevance_category String
+  relevance_rank     Int
+  relevance_score    Float
+  relevance_reason   String
+  is_combustion_related Boolean
+
+  extraction_status String
+  extraction_error  String
+  data_source       String
+
+  // ISA-Tab metadata, flattened where it is useful for filtering/display.
+  acronym                  String?
+  sub_research_area        String?
+  managing_center          String?
+  space_program            String?
+  proposal_title           String?
+  investigation_start_date String?
+  investigation_end_date   String?
+  study_submission_date    String?
+  study_public_release_date String?
+
+  // Full original record, preserving every source field exactly.
+  raw_json    String
+  ingested_at DateTime @default(now())
+
+  publications   Publication[]
+  documents      Document[]
+  source_archive SourceArchive?
+
+  @@index([research_area])
+  @@index([project_type])
+  @@index([relevance_rank, relevance_score])
+  @@index([extraction_status])
+  @@index([data_source])
+}
+
+model Publication {
+  id               Int    @id @default(autoincrement())
+  investigation_id String
+  position         Int
+
+  label      String
+  label_norm String
+  url        String
+  doi        String
+  authors_json String
+  status     String
+  pubmed_id  String
+
+  investigation Investigation @relation(fields: [investigation_id], references: [investigation_id], onDelete: Cascade)
+
+  @@index([investigation_id])
+  @@index([label_norm])
+  @@index([doi])
+}
+
+model Document {
+  id               Int    @id @default(autoincrement())
+  investigation_id String
+  position         Int
+
+  label String
+  url   String
+
+  investigation Investigation @relation(fields: [investigation_id], references: [investigation_id], onDelete: Cascade)
+
+  @@index([investigation_id])
+}
+
+model SourceArchive {
+  investigation_id String @id
+  file             String
+  format           String
+  study_identifier String
+  sha256           String
+  filename_matches_content Boolean
+
+  investigation Investigation @relation(fields: [investigation_id], references: [investigation_id], onDelete: Cascade)
+}
+
+model IngestionRun {
+  id                Int      @id @default(autoincrement())
+  dataset_sha256    String
+  source_path       String
+  record_count      Int
+  publication_count Int
+  document_count    Int
+  archive_count     Int
+  started_at        DateTime
+  finished_at       DateTime
+
+  @@index([dataset_sha256])
+}

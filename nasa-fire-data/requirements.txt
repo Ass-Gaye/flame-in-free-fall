@@ -1,0 +1,6 @@
+# Python scraping and data-repair tooling
+# Install with: python -m venv venv && venv/Scripts/pip install -r requirements.txt
+playwright==1.65.2
+
+# After installing, download the browser used by the scraper:
+#   playwright install chromium

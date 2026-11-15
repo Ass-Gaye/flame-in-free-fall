@@ -1,0 +1,46 @@
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+.venv/
+venv/
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+
+# Generated scraper artifacts (superseded by psi_output/)
+nasa-fire-data/output/
+
+# Environment and secrets
+.env
+.env.local
+.env.*.local
+!.env.example
+
+# Node / frontend
+node_modules/
+dist/
+dist-ssr/
+coverage/
+*.tsbuildinfo
+
+# Local databases
+*.db
+*.db-journal
+*.sqlite
+*.sqlite3
+
+# Logs
+*.log
+npm-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# Editor and OS files
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
+
+# Agent tooling
+.opencode/
