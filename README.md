@@ -92,7 +92,65 @@ The architecture will be designed to support additional OpenAI-compatible AI pro
 
 ## 🤖 AI Integration
 
-The initial AI integration will use **Gemma 4 E2B (`gemma4:e2b`) through Ollama**.
+
+
+The platform provides a flexible AI provider abstraction with **Google Gemini** as the default cloud provider and **Ollama** as an automatic local fallback.
+
+
+
+### Why Gemini is the Default Provider
+
+- **High-Capacity Cloud Reasoning:** Access to large-context models (such as `gemini-2.5-flash`) for complex multi-investigation synthesis.
+
+- **Accessibility:** Enables researchers on any machine to use AI features via a standard API key, without requiring local GPU acceleration.
+
+- **Automatic Fallback:** When `GEMINI_API_KEY` is not configured, or if Gemini is unavailable at runtime, the system automatically falls back to Ollama -- no manual reconfiguration needed.
+
+
+
+### Why Ollama is the Fallback Provider
+
+- **Local & Private:** Runs entirely on the local machine without transmitting scientific queries to external servers.
+
+- **Zero Cost & Offline:** Does not require paid API subscriptions, credits, or constant internet access.
+
+- **Consistent Local Runtime:** Gemma 4 E2B (`gemma4:e2b`) provides predictable responses suitable for structured scientific exploration.
+
+- **Standalone Mode:** Set `AI_PROVIDER=ollama` to use Ollama exclusively without any cloud fallback.
+
+
+
+### Provider Configuration & Status
+
+Configure the provider in environment variables:
+
+```env
+
+AI_PROVIDER=gemini # default; falls back to ollama automatically
+
+GEMINI_API_KEY=your-gemini-api-key
+
+GEMINI_MODEL=gemini-2.5-flash
+
+OLLAMA_BASE_URL=http://localhost:11434
+
+OLLAMA_MODEL=gemma4:e2b
+
+```
+
+
+
+Check current provider configuration and availability safely via:
+
+```http
+
+GET /api/ai/status
+
+```
+
+
+
+Responses distinguish configured status and service availability without making unnecessary paid calls or leaking API keys.
 
 The AI research assistant will retrieve relevant investigation records from the project dataset before generating answers.
 
@@ -191,7 +249,7 @@ The full application will additionally require:
 ```powershell
 cd frontend
 npm install
-npm run dev      # http://localhost:5173
+npm run dev      # http://localhost:5174
 npm run build    # type-check + production build
 npm run lint     # oxlint
 npm test         # Vitest
@@ -276,8 +334,16 @@ explorer, record pages, and library read the live API. URL-backed search,
 filters, sorting, pagination, publication grouping, document listings, dataset
 provenance, and offline/error states are implemented and tested.
 
-**Next: Phase 4 — research analytics**, adding Recharts visualisations on top of
-the verified `/api/statistics` aggregates.
+**Phase 4 — research analytics: complete.** Interactive distribution visualizations, data availability metrics, recurring combustion research themes, and empirical research gaps are live on `/analytics` with comprehensive test coverage.
+
+**Phase 5 — AI research assistant: complete.** Dual-provider (Gemini cloud + Ollama local fallback) RAG assistant with grounded citations and strict anti-hallucination guardrails.
+
+**Phase 6 — research library and export center: complete.** Full dataset, filtered query, single investigation, and statistics exports in JSON and CSV across /export-center, /investigations, and record detail pages.
+
+**Phase 7 — quality assurance and hardening: complete.** 118 automated tests passing, zero-warning linter, live settings inspection, dataset verification, security review, and comprehensive deployment documentation (docs/DEPLOYMENT_AND_CONFIGURATION.md).
+
+**Next: Phase 8 — deployment and release**, production environment configuration, containerization, and public availability.
+
 
 ## 📄 License
 

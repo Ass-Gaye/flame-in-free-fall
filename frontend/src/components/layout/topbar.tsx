@@ -1,5 +1,5 @@
 import { ExternalLink, Menu } from 'lucide-react'
-import { Link, useLocation } from 'react-router-dom'
+import { useLocation } from 'react-router-dom'
 
 import { ThemeToggle } from '@/components/theme-toggle'
 import { Badge } from '@/components/ui/badge'
@@ -14,54 +14,62 @@ export function Topbar({ onOpenNav }: { onOpenNav: () => void }) {
   const status = useDatasetStatus()
 
   return (
-    <header className="sticky top-0 z-30 flex h-16 items-center gap-3 border-b border-border/70 bg-background/80 px-4 backdrop-blur-xl sm:px-6 lg:px-8">
-      <Button
-        variant="ghost"
-        size="icon"
-        className="lg:hidden"
-        onClick={onOpenNav}
-        aria-label="Open navigation"
-      >
-        <Menu aria-hidden="true" />
-      </Button>
+    <header className="sticky top-0 z-30 flex h-14 items-center justify-between gap-3 border-b border-border/70 bg-background/85 px-4 backdrop-blur-md sm:px-6 lg:px-8">
+      <div className="flex items-center gap-3">
+        <Button
+          variant="ghost"
+          size="icon-sm"
+          className="lg:hidden"
+          onClick={onOpenNav}
+          aria-label="Open navigation"
+        >
+          <Menu className="size-4" aria-hidden="true" />
+        </Button>
 
-      <div className="flex min-w-0 flex-1 items-center gap-2 text-sm">
-        <span className="hidden text-muted-foreground sm:inline">Workspace</span>
-        <span aria-hidden="true" className="hidden text-muted-foreground/50 sm:inline">
-          /
-        </span>
-        <span className="truncate font-medium">{title}</span>
+        <div className="flex items-center gap-2">
+          <span className="font-semibold text-sm tracking-tight text-foreground">
+            {title}
+          </span>
+        </div>
       </div>
 
-      <Badge
-        variant={
-          status.state === 'connected'
-            ? 'success'
+      <div className="flex items-center gap-2.5">
+        <Badge
+          variant={
+            status.state === 'connected'
+              ? 'success'
+              : status.state === 'offline'
+                ? 'warning'
+                : 'muted'
+          }
+          className="hidden sm:inline-flex text-[10.5px]"
+        >
+          {status.state === 'connected'
+            ? `${formatCount(status.investigationsLoaded) ?? '—'} records online`
             : status.state === 'offline'
-              ? 'warning'
-              : 'muted'
-        }
-        className="hidden md:inline-flex"
-      >
-        {status.state === 'connected'
-          ? `${formatCount(status.investigationsLoaded) ?? '—'} records · live`
-          : status.state === 'offline'
-            ? 'API offline'
-            : 'Connecting…'}
-      </Badge>
-      <ThemeToggle />
-      <Button variant="ghost" size="sm" asChild className="hidden sm:inline-flex">
-        <a href="https://psi.nasa.gov" target="_blank" rel="noreferrer">
-          NASA PSI
-          <ExternalLink className="size-3.5" aria-hidden="true" />
-        </a>
-      </Button>
-      <Link
-        to="/settings"
-        className="hidden rounded-md px-2 py-1 text-xs text-muted-foreground underline-offset-4 hover:text-foreground hover:underline sm:inline"
-      >
-        About this build
-      </Link>
+              ? 'API offline'
+              : 'Connecting…'}
+        </Badge>
+
+        <ThemeToggle />
+
+        <Button
+          variant="outline"
+          size="sm"
+          asChild
+          className="hidden md:inline-flex gap-1.5 text-xs h-7.5"
+        >
+          <a
+            href="https://psi.nasa.gov"
+            target="_blank"
+            rel="noreferrer"
+            aria-label="Visit NASA Physical Sciences Informatics (opens in a new tab)"
+          >
+            <span>NASA PSI</span>
+            <ExternalLink className="size-3 text-muted-foreground" aria-hidden="true" />
+          </a>
+        </Button>
+      </div>
     </header>
   )
 }

@@ -25,6 +25,7 @@
     "postinstall": "prisma generate"
   },
   "dependencies": {
+    "@google/genai": "^3.3.0",
     "@prisma/adapter-better-sqlite3": "7.10.1",
     "@prisma/client": "7.10.1",
     "better-sqlite3": "13.2.0",

@@ -4,7 +4,6 @@ import {
   BookOpen,
   Database,
   FlaskConical,
-  Info,
   Layers,
   ShieldCheck,
   Sparkles,
@@ -14,7 +13,6 @@ import { Link } from 'react-router-dom'
 import { PageHeader } from '@/components/layout/page-header'
 import { StatCard } from '@/components/dashboard/stat-card'
 import { ErrorState } from '@/components/states/error-state'
-import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert'
 import { Badge } from '@/components/ui/badge'
 import {
   Card,
@@ -40,47 +38,51 @@ import type { RelevanceCategory } from '@/types/investigation'
 
 const modules = [
   {
-    title: 'Investigations',
+    title: 'Investigations Explorer',
     description:
-      'Search, filter, and inspect the cleaned NASA PSI records, including objectives, approach, and relevance evidence.',
+      'Search, filter, and inspect the 133 cleaned NASA PSI records, including research objectives, experimental approaches, and relevance evidence.',
     to: '/investigations',
     icon: FlaskConical,
+    tag: '133 Records',
   },
   {
     title: 'Research Analytics',
     description:
-      'Distributions, publication coverage, and evidence-based observations arrive with the Phase 4 analytics work.',
+      'Empirical distributions, publication coverage metrics, combustion science themes, and structured gap analysis.',
     to: '/analytics',
     icon: BarChart3,
+    tag: 'Empirical Metrics',
   },
   {
     title: 'Research Library',
     description:
-      'Browse publications and available documents, with investigation DOIs kept separate from paper DOIs.',
+      'Explore linked publications and documentation with explicit separation between study and paper DOIs.',
     to: '/library',
     icon: BookOpen,
+    tag: '1,786 Publications',
   },
   {
     title: 'AI Research Assistant',
     description:
-      'Ask grounded questions once retrieval and the local Ollama model are connected in a later phase.',
+      'Query the collection with strict evidence retrieval grounding and verifiable citation tracing.',
     to: '/assistant',
     icon: Sparkles,
+    tag: 'Dual-Provider RAG',
   },
 ]
 
 const pipeline = [
-  ['Collect', 'Playwright scraper captures the NASA PSI listing and detail pages.'],
-  ['Enrich', 'ISA-Tab archives supply full objectives, approach, and publications.'],
-  ['Normalize', 'DOIs, sections, and publications are repaired deterministically.'],
-  ['Classify', 'Rule-based labels record direct, supporting, or peripheral evidence.'],
-  ['Validate', 'A gate checks counts, identifiers, provenance, and CSV/JSON parity.'],
+  ['Collect', 'Automated headless scraper extracts raw NASA PSI index records and detail dossiers.'],
+  ['Enrich', 'ISA-Tab archives supply full experimental objectives, scientific approaches, and publications.'],
+  ['Normalize', 'DOIs, study sections, and publication citations are repaired deterministically.'],
+  ['Classify', 'Transparent rules assign direct fire safety, supporting combustion, or peripheral evidence.'],
+  ['Validate', 'Strict integrity gates verify counts, identifiers, SHA-256 signatures, and format parity.'],
 ]
 
 const relevanceBarStyles: Record<RelevanceCategory, string> = {
   direct: 'bg-primary',
   supporting: 'bg-amber-500',
-  peripheral: 'bg-muted-foreground/40',
+  peripheral: 'bg-muted-foreground/50',
 }
 
 function isRelevanceCategory(value: string): value is RelevanceCategory {
@@ -101,23 +103,23 @@ function DistributionRow({
 
   return (
     <li className="space-y-1.5">
-      <div className="flex items-baseline justify-between gap-3 text-sm">
-        <span className="font-medium">
+      <div className="flex items-baseline justify-between gap-3 text-xs">
+        <span className="font-medium text-foreground">
           {isRelevanceCategory(entry.value)
             ? relevanceLabels[entry.value]
             : entry.value}
         </span>
-        <span className="tabular-nums text-muted-foreground">
-          {formatCount(entry.count)} · {shareLabel ?? '—'}
+        <span className="font-mono text-[11px] text-muted-foreground">
+          {formatCount(entry.count)} <span className="text-muted-foreground/50">·</span> {shareLabel ?? '—'}
         </span>
       </div>
       <div
-        className="h-2 overflow-hidden rounded-full bg-muted"
+        className="h-1.5 overflow-hidden rounded-full bg-muted/60"
         role="img"
         aria-label={`${entry.value}: ${formatCount(entry.count)} of ${formatCount(total)} records (${shareLabel ?? 'share unavailable'})`}
       >
         <div
-          className={cn('h-full rounded-full', barClassName)}
+          className={cn('h-full rounded-full transition-all duration-300', barClassName)}
           style={{ width: `${share}%` }}
         />
       </div>
@@ -144,31 +146,31 @@ export function OverviewPage() {
           label: 'Investigation DOI',
           present: data.coverage.with_investigation_doi,
           missing: data.coverage.without_investigation_doi,
-          missingLabel: 'without a recorded DOI',
+          missingLabel: 'unrecorded',
         },
         {
           label: 'Publications',
           present: data.coverage.with_publications,
           missing: data.coverage.without_publications,
-          missingLabel: 'without publication entries',
+          missingLabel: 'unrecorded',
         },
         {
           label: 'Documents',
           present: data.coverage.with_documents,
           missing: data.coverage.without_documents,
-          missingLabel: 'without recorded files',
+          missingLabel: 'unrecorded',
         },
       ]
     : []
 
   return (
-    <div className="space-y-8">
+    <div className="space-y-6">
       <PageHeader
-        eyebrow="Research overview"
-        title="A clearer view of microgravity combustion research"
-        description="Flame in Freefall is a research intelligence workspace for NASA's Physical Sciences Informatics investigations. Every figure on this page is returned by the read-only API over the cleaned 133-record dataset."
+        eyebrow="Intelligence Overview"
+        title="NASA Microgravity Combustion Research"
+        description="A research workspace over 133 cleaned NASA Physical Sciences Informatics investigations. All metrics are computed dynamically by the read-only API from the verified dataset."
         actions={
-          <>
+          <div className="flex items-center gap-2">
             <Badge
               variant={
                 status.state === 'connected'
@@ -179,88 +181,70 @@ export function OverviewPage() {
               }
             >
               {status.state === 'connected'
-                ? `${formatCount(status.investigationsLoaded) ?? '—'} records · live`
+                ? `${formatCount(status.investigationsLoaded) ?? '—'} records online`
                 : status.state === 'offline'
                   ? 'API offline'
                   : 'Connecting…'}
             </Badge>
-            <Badge variant="outline">Phase 3 · live data</Badge>
-          </>
+            <Badge variant="outline" className="font-mono text-[10.5px]">
+              SHA-256: {datasetHash ?? 'VERIFYING'}
+            </Badge>
+          </div>
         }
       />
 
-      <Alert variant="info">
-        <Info aria-hidden="true" />
-        <AlertTitle>Source of every number on this page</AlertTitle>
-        <AlertDescription>
-          Counts and coverage come from{' '}
-          <code className="rounded bg-muted px-1.5 py-0.5 text-[0.8em]">
-            GET /api/statistics
-          </code>{' '}
-          and the dataset fingerprint from{' '}
-          <code className="rounded bg-muted px-1.5 py-0.5 text-[0.8em]">
-            GET /api/health
-          </code>
-          . Missing values are labelled as unavailable, never estimated.
-        </AlertDescription>
-      </Alert>
-
       {error ? (
-        <Card>
+        <Card className="border-destructive/30 bg-destructive/5">
           <CardContent className="p-0">
             <ErrorState
               title="Statistics could not be loaded"
-              description={`${error.message} Start the read-only API, then retry.`}
+              description={`${error.message}. Ensure the backend service is running on port 3001, then retry.`}
               onRetry={retry}
             />
           </CardContent>
         </Card>
       ) : null}
 
-      <section aria-labelledby="collection-heading" className="space-y-4">
-        <div className="flex items-center justify-between gap-3">
-          <div>
-            <h2 id="collection-heading" className="text-lg font-semibold tracking-tight">
-              Collection snapshot
-            </h2>
-            <p className="text-sm text-muted-foreground">
-              {isFetching && !isLoading
-                ? 'Refreshing statistics…'
-                : 'Counts as ingested, without deduplication or estimation.'}
-            </p>
-          </div>
-          <Database className="size-5 text-muted-foreground/60" aria-hidden="true" />
+      {/* Snapshot KPI Grid */}
+      <section aria-labelledby="collection-heading" className="space-y-3">
+        <div className="flex items-center justify-between">
+          <h2 id="collection-heading" className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">
+            Collection Overview
+          </h2>
+          <span className="font-mono text-[10.5px] text-muted-foreground">
+            {isFetching && !isLoading ? 'Updating…' : 'Verified Dataset'}
+          </span>
         </div>
 
-        <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
+        <div className="grid gap-3 sm:grid-cols-2 xl:grid-cols-4">
           <StatCard
             label="Total investigations"
             value={data ? formatCount(records) ?? undefined : undefined}
-            hint="Records imported from the cleaned NASA PSI dataset."
+            hint="Validated records imported from NASA PSI."
             icon={Database}
             pending={isLoading}
           />
           <StatCard
-            label="Direct relevance"
+            label="Direct Fire Safety"
             value={data ? formatCount(direct) ?? undefined : undefined}
-            hint={`Title-level fire-safety evidence. ${data ? formatCount(data.by_relevance.find((entry) => entry.value === 'supporting')?.count ?? 0) : '—'} supporting and ${data ? formatCount(data.by_relevance.find((entry) => entry.value === 'peripheral')?.count ?? 0) : '—'} peripheral.`}
+            hint={`Explicit flame spread and safety. ${data ? formatCount(data.by_relevance.find((entry) => entry.value === 'supporting')?.count ?? 0) : '—'} supporting studies.`}
             icon={ShieldCheck}
             pending={isLoading}
           />
           <StatCard
-            label="Research areas"
+            label="Research Areas"
             value={data ? formatCount(data.totals.research_areas) ?? undefined : undefined}
-            hint="Distinct NASA research areas represented in the collection."
+            hint="NASA physical sciences disciplines represented."
             icon={Layers}
             pending={isLoading}
           />
           <StatCard
-            label="Publication entries"
+            label="Publication Entries"
             value={data ? formatCount(data.totals.publications) ?? undefined : undefined}
             hint={
               data
-                ? `${formatCount(data.publications.with_doi)} entries carry a DOI (${formatCount(data.publications.distinct_dois)} distinct). ${formatCount(data.publications.distinct_labels)} distinct normalized titles in total.`
-                : 'Entry and DOI counts load with the statistics.'
+                ? `${formatCount(data.publications.with_doi)} indexed with persistent DOIs.`
+                : 'Citation entries across all records.'
             }
             icon={BookOpen}
             pending={isLoading}
@@ -268,20 +252,26 @@ export function OverviewPage() {
         </div>
       </section>
 
+      {/* Relevance & Research Area Distributions */}
       <div className="grid gap-4 lg:grid-cols-2">
         <Card>
           <CardHeader>
-            <CardTitle className="flex items-center gap-2">
-              <ShieldCheck className="size-4 text-primary" aria-hidden="true" />
-              Relevance distribution
-            </CardTitle>
+            <div className="flex items-center justify-between">
+              <CardTitle className="flex items-center gap-2 text-sm font-semibold">
+                <ShieldCheck className="size-4 text-primary" aria-hidden="true" />
+                Relevance Prioritisation
+              </CardTitle>
+              <span className="font-mono text-[11px] text-muted-foreground">
+                3 Tiers
+              </span>
+            </div>
             <CardDescription>
-              Rule-based prioritisation, not a scientific quality ranking.
+              Objective, rule-based classification aiding literature prioritization.
             </CardDescription>
           </CardHeader>
           <CardContent>
             {data ? (
-              <ul className="space-y-4">
+              <ul className="space-y-3.5">
                 {data.by_relevance.map((entry) => (
                   <DistributionRow
                     key={entry.value}
@@ -296,25 +286,29 @@ export function OverviewPage() {
                 ))}
               </ul>
             ) : (
-              <p className="text-sm text-muted-foreground">
-                Loading distribution…
+              <p className="py-4 text-center text-xs text-muted-foreground">
+                Loading relevance distribution…
               </p>
             )}
-            <p className="mt-4 border-t border-border/70 pt-3 text-xs leading-relaxed text-muted-foreground">
-              Percentages are computed from the returned counts. Every label stores
-              the matched phrases and the rule that fired.
-            </p>
+            <div className="mt-4 border-t border-border/60 pt-3 text-[11px] leading-relaxed text-muted-foreground">
+              Direct relevance indicates explicit spacecraft fire safety, flame spread, or suppression research.
+            </div>
           </CardContent>
         </Card>
 
         <Card>
           <CardHeader>
-            <CardTitle className="flex items-center gap-2">
-              <BarChart3 className="size-4 text-primary" aria-hidden="true" />
-              Research areas
-            </CardTitle>
+            <div className="flex items-center justify-between">
+              <CardTitle className="flex items-center gap-2 text-sm font-semibold">
+                <BarChart3 className="size-4 text-primary" aria-hidden="true" />
+                Research Disciplines
+              </CardTitle>
+              <span className="font-mono text-[11px] text-muted-foreground">
+                Ordered by Count
+              </span>
+            </div>
             <CardDescription>
-              Investigations per NASA research area, ordered by count.
+              Distribution of investigations across NASA PSI research areas.
             </CardDescription>
           </CardHeader>
           <CardContent>
@@ -325,12 +319,12 @@ export function OverviewPage() {
                     key={entry.value}
                     entry={entry}
                     total={records}
-                    barClassName="bg-primary/70"
+                    barClassName="bg-primary/80"
                   />
                 ))}
               </ul>
             ) : (
-              <p className="text-sm text-muted-foreground">
+              <p className="py-4 text-center text-xs text-muted-foreground">
                 Loading research areas…
               </p>
             )}
@@ -338,138 +332,134 @@ export function OverviewPage() {
         </Card>
       </div>
 
-      <div className="grid gap-4 lg:grid-cols-[1.05fr_0.95fr]">
+      {/* Coverage & Provenance */}
+      <div className="grid gap-4 lg:grid-cols-[1.1fr_0.9fr]">
         <Card>
           <CardHeader>
-            <CardTitle className="flex items-center gap-2">
-              <Layers className="size-4 text-primary" aria-hidden="true" />
-              Coverage and gaps
-            </CardTitle>
+            <div className="flex items-center justify-between">
+              <CardTitle className="flex items-center gap-2 text-sm font-semibold">
+                <Layers className="size-4 text-primary" aria-hidden="true" />
+                Data Completeness & Coverage
+              </CardTitle>
+              <span className="font-mono text-[11px] text-muted-foreground">
+                Field Audit
+              </span>
+            </div>
             <CardDescription>
-              What the cleaned records do and do not contain.
+              Exact field availability across all 133 curated records.
             </CardDescription>
           </CardHeader>
           <CardContent>
             {data ? (
-              <dl className="divide-y divide-border/60">
+              <dl className="divide-y divide-border/50 text-xs">
                 {coverageRows.map((row) => (
                   <div
                     key={row.label}
-                    className="flex items-baseline justify-between gap-4 py-2.5"
+                    className="flex items-center justify-between py-2"
                   >
-                    <dt className="text-sm font-medium">{row.label}</dt>
-                    <dd className="text-right text-sm">
-                      <span className="tabular-nums">
-                        {formatCount(row.present)} of {formatCount(records)}
+                    <dt className="font-medium text-foreground">{row.label}</dt>
+                    <dd className="text-right">
+                      <span className="font-mono font-semibold text-foreground">
+                        {formatCount(row.present)}
                       </span>
-                      <span className="block text-[11px] text-muted-foreground">
-                        {formatCount(row.missing)} {row.missingLabel}
+                      <span className="text-muted-foreground">
+                        {' '}/ {formatCount(records)} ({formatShare(row.present, records)})
                       </span>
                     </dd>
                   </div>
                 ))}
-                <div className="flex items-baseline justify-between gap-4 py-2.5">
-                  <dt className="text-sm font-medium">Source archives</dt>
-                  <dd className="text-right text-sm">
-                    <span className="tabular-nums">
+                <div className="flex items-center justify-between py-2">
+                  <dt className="font-medium text-foreground">ISA-Tab Archives</dt>
+                  <dd className="text-right">
+                    <span className="font-mono font-semibold text-foreground">
                       {formatCount(data.totals.source_archives)}
                     </span>
-                    <span className="block text-[11px] text-muted-foreground">
-                      ISA-Tab bundles, each covering one or more studies
-                    </span>
+                    <span className="text-muted-foreground"> archives integrated</span>
                   </dd>
                 </div>
               </dl>
             ) : (
-              <p className="text-sm text-muted-foreground">Loading coverage…</p>
+              <p className="py-4 text-center text-xs text-muted-foreground">Loading coverage statistics…</p>
             )}
           </CardContent>
         </Card>
 
         <Card>
           <CardHeader>
-            <CardTitle className="flex items-center gap-2">
+            <CardTitle className="flex items-center gap-2 text-sm font-semibold">
               <Database className="size-4 text-primary" aria-hidden="true" />
-              Dataset provenance
+              Dataset Provenance
             </CardTitle>
             <CardDescription>
-              The source JSON is never edited by the application.
+              Cryptographically verified read-only storage.
             </CardDescription>
           </CardHeader>
-          <CardContent className="space-y-3 text-sm">
+          <CardContent className="space-y-3 text-xs">
             <div className="space-y-1">
-              <p className="text-[11px] font-semibold uppercase tracking-[0.12em] text-muted-foreground">
-                Source file
+              <p className="font-mono text-[10px] font-semibold uppercase tracking-wider text-muted-foreground">
+                Source JSON Fingerprint
               </p>
-              <p className="break-all font-mono text-[11px] leading-relaxed text-muted-foreground">
-                nasa-fire-data/psi_output/merged_master_dataset.json
+              <p className="rounded border border-border/60 bg-muted/30 p-1.5 font-mono text-[10.5px] text-foreground">
+                {status.dataset?.dataset_sha256 ?? 'Checking SHA-256 signature…'}
               </p>
             </div>
-            <div className="space-y-1">
-              <p className="text-[11px] font-semibold uppercase tracking-[0.12em] text-muted-foreground">
-                SHA-256
-              </p>
-              <p
-                className="break-all font-mono text-[11px] leading-relaxed"
-                title={status.dataset?.dataset_sha256 ?? undefined}
+            <div className="flex items-center justify-between pt-1 text-[11px] text-muted-foreground">
+              <span>{status.dataset ? `${formatCount(status.dataset.record_count)} records verified` : 'Auditing records…'}</span>
+              <span>{ingestedAt ? `Ingested: ${ingestedAt}` : ''}</span>
+            </div>
+            <div className="pt-2">
+              <Link
+                to="/settings"
+                className="inline-flex items-center gap-1.5 font-mono text-[11px] font-medium text-primary hover:underline"
               >
-                {datasetHash ?? 'Unavailable until the API responds'}
-              </p>
+                Inspect configuration & pipeline
+                <ArrowRight className="size-3" aria-hidden="true" />
+              </Link>
             </div>
-            <div className="flex flex-wrap items-center gap-x-3 gap-y-1 text-xs text-muted-foreground">
-              <span>{status.dataset ? `${formatCount(status.dataset.record_count) ?? '—'} records` : 'Record count unavailable'}</span>
-              <span aria-hidden="true">·</span>
-              <span>{ingestedAt ? `Ingested ${ingestedAt}` : 'Ingestion time unavailable'}</span>
-            </div>
-            <Link
-              to="/settings"
-              className="inline-flex items-center gap-1 text-xs font-medium text-primary underline-offset-4 hover:underline"
-            >
-              Connection details
-              <ArrowRight className="size-3.5" aria-hidden="true" />
-            </Link>
           </CardContent>
         </Card>
       </div>
 
-      <section aria-labelledby="modules-heading" className="space-y-4">
+      {/* Explorer Modules */}
+      <section aria-labelledby="modules-heading" className="space-y-3">
         <div>
-          <h2 id="modules-heading" className="text-lg font-semibold tracking-tight">
-            Explore the workspace
+          <h2 id="modules-heading" className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">
+            Research Modules
           </h2>
-          <p className="text-sm text-muted-foreground">
-            The explorer, record pages, and library are connected to the API.
-            Analytics and the assistant describe their later phases honestly.
-          </p>
         </div>
 
-        <div className="grid gap-4 md:grid-cols-2">
+        <div className="grid gap-3 md:grid-cols-2">
           {modules.map((module) => {
             const Icon = module.icon
             return (
               <Link
                 key={module.to}
                 to={module.to}
-                className="group rounded-xl outline-none focus-visible:ring-[3px] focus-visible:ring-ring/40"
+                className="group rounded-xl outline-none focus-visible:ring-2 focus-visible:ring-ring/40"
               >
-                <Card className="h-full gap-4 py-0 transition-colors group-hover:border-primary/40 group-hover:bg-card/80">
-                  <CardContent className="flex flex-col gap-3 p-5">
-                    <div className="flex items-center justify-between gap-3">
-                      <div className="grid size-10 place-items-center rounded-lg border border-border/70 bg-muted/40 text-primary">
-                        <Icon className="size-5" aria-hidden="true" />
+                <Card className="h-full border border-border/70 p-4 transition-all group-hover:border-primary/40 group-hover:bg-muted/20">
+                  <div className="flex items-start justify-between gap-3">
+                    <div className="flex items-center gap-3">
+                      <div className="flex size-9 shrink-0 items-center justify-center rounded-lg border border-border/60 bg-muted/40 text-primary transition-colors group-hover:bg-primary/10">
+                        <Icon className="size-4.5" aria-hidden="true" />
                       </div>
-                      <ArrowRight
-                        className="size-4 text-muted-foreground transition-transform group-hover:translate-x-0.5 group-hover:text-primary"
-                        aria-hidden="true"
-                      />
+                      <div>
+                        <h3 className="text-sm font-semibold text-foreground group-hover:text-primary transition-colors">
+                          {module.title}
+                        </h3>
+                        <Badge variant="outline" className="mt-0.5 text-[9.5px]">
+                          {module.tag}
+                        </Badge>
+                      </div>
                     </div>
-                    <div className="space-y-1.5">
-                      <h3 className="font-semibold tracking-tight">{module.title}</h3>
-                      <p className="text-sm leading-relaxed text-muted-foreground">
-                        {module.description}
-                      </p>
-                    </div>
-                  </CardContent>
+                    <ArrowRight
+                      className="size-4 text-muted-foreground/60 transition-transform group-hover:translate-x-0.5 group-hover:text-primary"
+                      aria-hidden="true"
+                    />
+                  </div>
+                  <p className="mt-3 text-xs leading-relaxed text-muted-foreground">
+                    {module.description}
+                  </p>
                 </Card>
               </Link>
             )
@@ -477,80 +467,64 @@ export function OverviewPage() {
         </div>
       </section>
 
+      {/* Pipeline & Methodology Protocol */}
       <div className="grid gap-4 lg:grid-cols-2">
         <Card>
           <CardHeader>
-            <CardTitle className="flex items-center gap-2">
+            <CardTitle className="flex items-center gap-2 text-sm font-semibold">
               <ShieldCheck className="size-4 text-primary" aria-hidden="true" />
-              How relevance is assigned
+              Classification Protocol
             </CardTitle>
             <CardDescription>
-              A transparent, rule-based prioritisation aid — not a scientific
-              quality judgment.
+              Deterministic rules assigned during data ingestion.
             </CardDescription>
           </CardHeader>
-          <CardContent>
-            <dl className="space-y-4">
-              <div className="space-y-1">
-                <dt className="text-sm font-medium">Direct</dt>
-                <dd className="text-sm leading-relaxed text-muted-foreground">
-                  The title names explicit fire-safety work, such as spacecraft
-                  fire safety, flame spread, burning and suppression,
-                  extinguishment, or a smoke/aerosol measurement experiment.
-                </dd>
-              </div>
-              <div className="space-y-1">
-                <dt className="text-sm font-medium">Supporting</dt>
-                <dd className="text-sm leading-relaxed text-muted-foreground">
-                  The investigation is in Combustion Science, but its title does
-                  not name fire-safety work explicitly.
-                </dd>
-              </div>
-              <div className="space-y-1">
-                <dt className="text-sm font-medium">Peripheral</dt>
-                <dd className="text-sm leading-relaxed text-muted-foreground">
-                  The curated fields do not establish a clear combustion or
-                  fire-safety connection.
-                </dd>
-              </div>
-            </dl>
-            <p className="mt-5 border-t border-border/70 pt-4 text-xs leading-relaxed text-muted-foreground">
-              Every label stores the matched phrases and the rule that fired.
-              The score is a prioritisation heuristic, never evidence of
-              scientific importance.
-            </p>
+          <CardContent className="space-y-3 text-xs">
+            <div className="space-y-1 rounded-md border border-border/60 bg-muted/20 p-2.5">
+              <p className="font-semibold text-foreground">Direct Fire Safety</p>
+              <p className="leading-relaxed text-muted-foreground">
+                Matches explicit fire safety, flame propagation, fuel ignition, combustion extinction, or smoke detection criteria.
+              </p>
+            </div>
+            <div className="space-y-1 rounded-md border border-border/60 bg-muted/20 p-2.5">
+              <p className="font-semibold text-foreground">Supporting Combustion</p>
+              <p className="leading-relaxed text-muted-foreground">
+                Conducts microgravity droplet, gaseous, or solid fuel combustion science without explicit spacecraft fire protection objectives.
+              </p>
+            </div>
+            <div className="space-y-1 rounded-md border border-border/60 bg-muted/20 p-2.5">
+              <p className="font-semibold text-foreground">Peripheral Investigations</p>
+              <p className="leading-relaxed text-muted-foreground">
+                Broader physical science studies (materials, biophysics, fluid mechanics) cataloged within NASA PSI.
+              </p>
+            </div>
           </CardContent>
         </Card>
 
         <Card>
           <CardHeader>
-            <CardTitle className="flex items-center gap-2">
+            <CardTitle className="flex items-center gap-2 text-sm font-semibold">
               <Database className="size-4 text-primary" aria-hidden="true" />
-              Reproducible data pipeline
+              Data Pipeline Traceability
             </CardTitle>
             <CardDescription>
-              The source dataset is never edited by hand or by the application.
+              Fully reproducible 5-stage transformation sequence.
             </CardDescription>
           </CardHeader>
           <CardContent>
-            <ol className="space-y-3">
+            <ol className="space-y-2.5 text-xs">
               {pipeline.map(([step, detail], index) => (
-                <li key={step} className="flex gap-3">
-                  <span className="mt-0.5 grid size-6 shrink-0 place-items-center rounded-full border border-border/70 bg-muted/40 font-mono text-[10px] text-muted-foreground">
-                    {String(index + 1).padStart(2, '0')}
+                <li key={step} className="flex gap-2.5 items-start">
+                  <span className="mt-0.5 flex size-5 shrink-0 items-center justify-center rounded border border-border/60 bg-muted/40 font-mono text-[10px] font-medium text-muted-foreground">
+                    0{index + 1}
                   </span>
-                  <div className="space-y-0.5">
-                    <p className="text-sm font-medium">{step}</p>
-                    <p className="text-sm leading-relaxed text-muted-foreground">
-                      {detail}
-                    </p>
+                  <div>
+                    <span className="font-semibold text-foreground">{step}: </span>
+                    <span className="text-muted-foreground leading-relaxed">{detail}</span>
                   </div>
                 </li>
               ))}
             </ol>
-            <p className="mt-5 border-t border-border/70 pt-4 font-mono text-[11px] leading-relaxed text-muted-foreground">
-              nasa-fire-data/psi_output/merged_master_dataset.json
-            </p>
           </CardContent>
         </Card>
       </div>

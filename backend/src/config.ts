@@ -3,6 +3,8 @@ import { fileURLToPath } from 'node:url'
 
 import { config as loadEnv } from 'dotenv'
 
+import { parseAiProvider } from './ai/types.js'
+
 const backendRoot = fileURLToPath(new URL('..', import.meta.url))
 
 loadEnv({ path: path.join(backendRoot, '.env') })
@@ -42,11 +44,24 @@ export const config = {
   nodeEnv: process.env.NODE_ENV ?? 'development',
   port: parsePort(process.env.PORT),
   databaseUrl: resolveDatabaseUrl(process.env.DATABASE_URL),
-  corsOrigins: (process.env.CORS_ORIGIN ?? 'http://localhost:5173')
+  corsOrigins: (
+    process.env.CORS_ORIGIN ?? 'http://localhost:5174,http://localhost:5173'
+  )
     .split(',')
     .map((origin) => origin.trim())
     .filter(Boolean),
   dataSourcePath: path.isAbsolute(dataSourceRaw)
     ? dataSourceRaw
     : path.resolve(backendRoot, dataSourceRaw),
+  ai: {
+    provider: parseAiProvider(process.env.AI_PROVIDER),
+    ollama: {
+      baseUrl: (process.env.OLLAMA_BASE_URL || 'http://localhost:11434').trim(),
+      model: (process.env.OLLAMA_MODEL || 'gemma4:e2b').trim(),
+    },
+    gemini: {
+      apiKey: (process.env.GEMINI_API_KEY || '').trim(),
+      model: (process.env.GEMINI_MODEL || 'gemini-2.5-flash').trim(),
+    },
+  },
 }

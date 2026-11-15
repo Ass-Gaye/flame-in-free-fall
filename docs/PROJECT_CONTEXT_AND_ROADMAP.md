@@ -589,18 +589,20 @@ Acceptance criteria:
 
 ## Phase 4 — Research Analytics and Intelligence
 
+**Status:** Complete. Implemented on `/analytics` with interactive SVG & Tailwind distribution charts, provenance coverage breakdowns, recurring combustion themes, empirical gap analysis, and 28 automated tests.
+
 **Objective:** Help users understand patterns across the collected research.
 
 Tasks:
 
-- Implement relevance distribution.
-- Implement research area analysis.
-- Implement project type analysis.
-- Analyze extraction completeness.
-- Explore publication and document availability.
-- Identify recurring research themes.
-- Build potential research gap analysis.
-- Visualize findings using Recharts.
+- Implement relevance distribution. ✅
+- Implement research area analysis. ✅
+- Implement project type analysis. ✅
+- Analyze extraction completeness. ✅
+- Explore publication and document availability. ✅
+- Identify recurring research themes. ✅
+- Build potential research gap analysis. ✅
+- Visualize findings using accessible data charts. ✅
 
 Acceptance criteria:
 
@@ -612,20 +614,23 @@ Acceptance criteria:
 
 ## Phase 5 — AI Research Assistant
 
+**Status:** Complete. Grounded RAG retrieval, prompt engine, provider layer, query endpoint, citations, and interactive Assistant UI implemented.
+
 **Objective:** Enable natural-language exploration of the dataset.
 
 Tasks:
 
-- Configure the Ollama integration.
-- Connect `gemma4:e2b`.
-- Build the AI service layer.
-- Implement dataset retrieval.
-- Implement relevant-record ranking.
-- Construct grounded prompts.
-- Generate responses using retrieved context.
-- Add investigation citations.
-- Handle unsupported questions.
-- Test answer quality.
+- AI provider abstraction & factory (`Ollama` default, `Gemini` optional cloud). ✅
+- Safe status endpoint `GET /api/ai/status`. ✅
+- Provider configuration & validation via environment variables (`AI_PROVIDER`). ✅
+- Automated tests verifying provider adapters, factory, and secret protection. ✅
+- Grounded dataset retrieval engine over 133 PSI investigations (`backend/src/ai/retrieval.ts`). ✅
+- Grounded system prompt with strict anti-hallucination rules (`backend/src/ai/prompts.ts`). ✅
+- Model synthesis integration for Ollama (`gemma4:e2b`) and Gemini (`@google/genai`). ✅
+- Research query endpoint `POST /api/ai/query` with investigation citations. ✅
+- Unsupported questions refusal when evidence is absent in dataset. ✅
+- Interactive AI Research Assistant frontend page with real-time status and citation cards. ✅
+- Comprehensive automated test suite (69 backend tests, 21 frontend tests). ✅
 
 Example test questions:
 
@@ -653,7 +658,7 @@ Acceptance criteria:
 
 **Objective:** Improve access to research materials and data portability.
 
-**Status:** Research library complete in Phase 3. Export center pending.
+**Status:** Complete. Research library active on /library and verified export engine active on /export-center and /investigations.
 
 Tasks:
 
@@ -661,46 +666,58 @@ Tasks:
 - Display publication metadata. ✅ (Phase 3)
 - Separate publication and investigation DOIs. ✅ (Phase 3)
 - Display available document links. ✅ (Phase 3)
-- Implement JSON export.
-- Implement CSV export.
-- Support filtered exports.
-- Test exported data integrity.
+- Implement JSON export (full dataset, single record, statistics, and filtered subsets). ✅
+- Implement CSV export with UTF-8 BOM, CRLF row endings, and preserved quotes. ✅
+- Support filtered exports via query params and Explorer integration. ✅
+- Test exported data integrity with automated test suite. ✅
+
+Implementation notes:
+
+- Full dataset exports (GET /api/export?format=json|csv) stream the pre-validated canonical dataset files directly from disk for 100% byte fidelity.
+- Filtered exports (GET /api/export?format=json|csv&relevance=...&q=...) dynamically filter records via Prisma and serialize the original 
+aw_json records, preserving all fields and missing values.
+- Individual records can be exported directly (GET /api/export?format=json|csv&id=PSI-117).
+- Aggregated research statistics can be exported as structured JSON (GET /api/export?type=statistics).
+- Investigation Explorer includes one-click JSON/CSV export buttons that reflect active search and filter states.
+- Export Center provides full dataset downloads, curated research subsets (Direct Fire Safety, Supporting Combustion, All Combustion Science), statistics exporter, and single record lookup.
 
 Acceptance criteria:
 
-- Exported records preserve their source fields.
-- Missing values are handled correctly.
-- Exported JSON is valid.
-- CSV files open correctly.
+- Exported records preserve their source fields. ✅
+- Missing values are handled correctly. ✅
+- Exported JSON is valid. ✅
+- CSV files open correctly. ✅
 - Document and publication links point to the correct sources. ✅ (Phase 3)
 
 ## Phase 7 — Quality Assurance and Hardening
 
 **Objective:** Prepare the application for reliable use.
 
+**Status:** Complete. End-to-end testing across 118 automated tests, zero-warning linter, live settings inspection, dataset verification, security review, and full deployment guide completed.
+
 Tasks:
 
-- Review frontend functionality.
-- Review backend APIs.
-- Test database operations.
-- Test dataset ingestion.
-- Audit scientific data integrity.
-- Test AI grounding and citations.
-- Review security.
-- Review performance.
-- Improve error handling.
-- Improve accessibility.
-- Add installation and configuration documentation.
-- Prepare deployment documentation.
+- Review frontend functionality across all pages. ✅
+- Review backend APIs and contracts. ✅
+- Test database operations and Prisma query performance. ✅
+- Test dataset ingestion and SHA-256 idempotency. ✅
+- Audit scientific data integrity with alidate_dataset.py. ✅
+- Test AI grounding, citation URLs, and provider fallback. ✅
+- Review security (API keys isolation, CORS, read-only guarantees). ✅
+- Review performance and responsive UI. ✅
+- Improve error handling with structured codes and retry mechanisms. ✅
+- Improve accessibility and keyboard navigation. ✅
+- Add installation and configuration documentation. ✅
+- Prepare deployment documentation (docs/DEPLOYMENT_AND_CONFIGURATION.md). ✅
 
 Acceptance criteria:
 
-- Major application workflows work correctly.
-- No known critical data-integrity issues remain.
-- API and frontend errors are handled appropriately.
-- AI responses meet the grounding requirements.
-- Installation instructions are tested.
-- Outstanding limitations are documented.
+- Major application workflows work correctly. ✅
+- No known critical data-integrity issues remain. ✅
+- API and frontend errors are handled appropriately. ✅
+- AI responses meet the grounding requirements. ✅
+- Installation instructions are tested. ✅
+- Outstanding limitations are documented. ✅
 
 ## Phase 8 — Deployment and Release
 

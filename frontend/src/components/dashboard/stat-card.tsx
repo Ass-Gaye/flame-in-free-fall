@@ -22,26 +22,26 @@ export function StatCard({
   className,
 }: StatCardProps) {
   return (
-    <Card className={cn('gap-0 py-0', className)}>
-      <CardContent className="p-5">
-        <div className="flex items-start justify-between gap-3">
-          <p className="text-[11px] font-semibold uppercase tracking-[0.14em] text-muted-foreground">
+    <Card className={cn('gap-0 py-0 transition-all hover:border-border', className)}>
+      <CardContent className="p-4 sm:p-4.5">
+        <div className="flex items-center justify-between gap-2">
+          <p className="font-mono text-[10px] font-semibold uppercase tracking-wider text-muted-foreground">
             {label}
           </p>
-          <div className="grid size-8 place-items-center rounded-lg border border-border/70 bg-muted/40 text-muted-foreground">
-            <Icon className="size-4" aria-hidden="true" />
+          <div className="flex size-7 shrink-0 items-center justify-center rounded-md border border-border/60 bg-muted/30 text-muted-foreground">
+            <Icon className="size-3.5" aria-hidden="true" />
           </div>
         </div>
-        <div className="mt-3 flex items-baseline gap-2">
+        <div className="mt-2.5 flex items-baseline gap-2">
           {pending ? (
-            <Skeleton className="h-8 w-20" aria-label={`${label} unavailable`} />
+            <Skeleton className="h-7 w-20" aria-label={`${label} unavailable`} />
           ) : (
-            <span className="text-3xl font-semibold tabular-nums tracking-tight">
+            <span className="text-2xl font-bold tabular-nums tracking-tight text-foreground">
               {value ?? '—'}
             </span>
           )}
         </div>
-        <p className="mt-2 text-xs leading-relaxed text-muted-foreground">{hint}</p>
+        <p className="mt-1 text-[11px] leading-relaxed text-muted-foreground">{hint}</p>
       </CardContent>
     </Card>
   )

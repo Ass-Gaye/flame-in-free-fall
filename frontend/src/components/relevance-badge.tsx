@@ -10,10 +10,11 @@ const labels: Record<RelevanceCategory, string> = {
 
 const styles: Record<RelevanceCategory, string> = {
   direct:
-    'border-primary/30 bg-primary/12 text-primary dark:bg-primary/15',
+    'border-primary/25 bg-primary/10 text-primary dark:bg-primary/15 dark:border-primary/30',
   supporting:
-    'border-amber-500/30 bg-amber-500/12 text-amber-700 dark:text-amber-300',
-  peripheral: 'border-border bg-muted/60 text-muted-foreground',
+    'border-amber-500/25 bg-amber-500/10 text-amber-700 dark:text-amber-300 dark:bg-amber-500/15 dark:border-amber-500/30',
+  peripheral:
+    'border-border/60 bg-muted/40 text-muted-foreground',
 }
 
 interface RelevanceBadgeProps {
@@ -41,7 +42,7 @@ export function RelevanceBadge({
     <Badge
       variant="outline"
       title={title}
-      className={cn('gap-1.5 font-medium', styles[category], className)}
+      className={cn('gap-1.5 font-mono text-[10.5px] font-medium tracking-tight', styles[category], className)}
     >
       <span
         aria-hidden="true"

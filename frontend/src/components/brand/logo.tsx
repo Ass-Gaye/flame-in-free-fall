@@ -4,16 +4,16 @@ import { cn } from '@/lib/utils'
 
 export function Logo({ className }: { className?: string }) {
   return (
-    <div className={cn('flex items-center gap-3', className)}>
-      <div className="grid size-9 shrink-0 place-items-center rounded-xl bg-gradient-to-br from-orange-500 via-orange-400 to-amber-300 text-[#1b1206] shadow-[0_0_26px_-8px_rgba(249,115,22,0.85)]">
-        <Flame className="size-5" strokeWidth={2.2} aria-hidden="true" />
+    <div className={cn('flex items-center gap-2.5', className)}>
+      <div className="flex size-7.5 shrink-0 items-center justify-center rounded-lg bg-primary text-primary-foreground shadow-xs">
+        <Flame className="size-4" strokeWidth={2.4} aria-hidden="true" />
       </div>
-      <div className="min-w-0 leading-tight">
-        <span className="block truncate text-sm font-semibold tracking-tight">
+      <div className="min-w-0 leading-none">
+        <span className="block truncate text-sm font-semibold tracking-tight text-foreground">
           Flame in Freefall
         </span>
-        <span className="block truncate text-[10px] font-medium uppercase tracking-[0.16em] text-muted-foreground">
-          NASA PSI research
+        <span className="mt-1 block truncate font-mono text-[9.5px] font-medium uppercase tracking-wider text-muted-foreground">
+          NASA PSI Intelligence
         </span>
       </div>
     </div>

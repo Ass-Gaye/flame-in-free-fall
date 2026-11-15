@@ -1,6 +1,7 @@
 import {
   AlertTriangle,
   ArrowLeft,
+  Download,
   ExternalLink as ExternalLinkIcon,
   FileSearch,
   FileText,
@@ -28,7 +29,7 @@ import {
   CardHeader,
   CardTitle,
 } from '@/components/ui/card'
-import { ApiError, getInvestigation } from '@/lib/api'
+import { ApiError, exportDatasetUrl, getInvestigation } from '@/lib/api'
 import { useApiQuery } from '@/lib/api-hooks'
 import {
   dataSourceLabels,
@@ -185,6 +186,15 @@ export function InvestigationDetailPage() {
                 reason={data.relevance_reason}
               />
               <ExtractionBadge status={data.extraction_status} />
+              <Button variant="outline" size="sm" asChild>
+                <a
+                  href={exportDatasetUrl({ format: 'json', id: data.investigation_id })}
+                  download={`flame-in-freefall-${data.investigation_id}.json`}
+                >
+                  <Download aria-hidden="true" className="size-3.5" />
+                  JSON
+                </a>
+              </Button>
               <Button variant="outline" size="sm" asChild>
                 <a href={data.url} target="_blank" rel="noreferrer noopener">
                   NASA source

@@ -1,8 +1,7 @@
-import { Database, Flame } from 'lucide-react'
-import { NavLink } from 'react-router-dom'
+import { Database } from 'lucide-react'
+import { Link, NavLink } from 'react-router-dom'
 
 import { Logo } from '@/components/brand/logo'
-import { Badge } from '@/components/ui/badge'
 import { useDatasetStatus } from '@/lib/dataset-status'
 import { formatCount } from '@/lib/format'
 import { cn } from '@/lib/utils'
@@ -12,97 +11,107 @@ export function SidebarNav({ onNavigate }: { onNavigate?: () => void }) {
   const status = useDatasetStatus()
 
   return (
-    <div className="flex h-full flex-col">
-      <div className="flex h-16 items-center border-b border-sidebar-border px-5">
-        <Logo />
+    <div className="flex h-full flex-col justify-between">
+      <div>
+        {/* Brand header */}
+        <div className="flex h-14 items-center border-b border-sidebar-border/70 px-4">
+          <Logo />
+        </div>
+
+        {/* Navigation list */}
+        <nav
+          aria-label="Main navigation"
+          className="space-y-5 px-2.5 py-4"
+        >
+          {navSections.map((section) => (
+            <div key={section.label} className="space-y-1">
+              <p className="px-2.5 text-[10px] font-semibold uppercase tracking-wider text-muted-foreground/70">
+                {section.label}
+              </p>
+              <ul className="space-y-0.5">
+                {section.items.map((item) => {
+                  const Icon = item.icon
+                  return (
+                    <li key={item.to}>
+                      <NavLink
+                        to={item.to}
+                        end={item.end}
+                        onClick={onNavigate}
+                        className={({ isActive }) =>
+                          cn(
+                            'group relative flex items-center gap-2.5 rounded-lg px-2.5 py-1.5 text-xs font-medium outline-none transition-colors',
+                            'focus-visible:ring-2 focus-visible:ring-ring/40',
+                            isActive
+                              ? 'bg-primary/10 text-primary font-semibold dark:bg-primary/15'
+                              : 'text-sidebar-foreground/70 hover:bg-sidebar-accent hover:text-sidebar-foreground',
+                          )
+                        }
+                      >
+                        {({ isActive }) => (
+                          <>
+                            <Icon
+                              className={cn(
+                                'size-4 shrink-0 transition-colors',
+                                isActive
+                                  ? 'text-primary'
+                                  : 'text-sidebar-foreground/50 group-hover:text-sidebar-foreground',
+                              )}
+                              aria-hidden="true"
+                            />
+                            <span className="truncate">{item.label}</span>
+                            {isActive ? (
+                              <span
+                                aria-hidden="true"
+                                className="absolute inset-y-1.5 right-1.5 w-1 rounded-full bg-primary"
+                              />
+                            ) : null}
+                          </>
+                        )}
+                      </NavLink>
+                    </li>
+                  )
+                })}
+              </ul>
+            </div>
+          ))}
+        </nav>
       </div>
 
-      <nav
-        aria-label="Main navigation"
-        className="flex-1 space-y-6 overflow-y-auto px-3 py-5"
-      >
-        {navSections.map((section) => (
-          <div key={section.label}>
-            <p className="px-3 pb-2 text-[10px] font-semibold uppercase tracking-[0.18em] text-muted-foreground/80">
-              {section.label}
-            </p>
-            <ul className="space-y-0.5">
-              {section.items.map((item) => {
-                const Icon = item.icon
-                return (
-                  <li key={item.to}>
-                    <NavLink
-                      to={item.to}
-                      end={item.end}
-                      onClick={onNavigate}
-                      className={({ isActive }) =>
-                        cn(
-                          'group flex items-center gap-2.5 rounded-md px-3 py-2 text-sm outline-none transition-colors',
-                          'focus-visible:ring-[3px] focus-visible:ring-ring/40',
-                          isActive
-                            ? 'bg-sidebar-accent text-sidebar-accent-foreground'
-                            : 'text-muted-foreground hover:bg-sidebar-accent/50 hover:text-sidebar-accent-foreground',
-                        )
-                      }
-                    >
-                      {({ isActive }) => (
-                        <>
-                          <Icon
-                            className={cn(
-                              'size-4 shrink-0',
-                              isActive
-                                ? 'text-primary'
-                                : 'text-muted-foreground group-hover:text-foreground',
-                            )}
-                            aria-hidden="true"
-                          />
-                          <span className="truncate">{item.label}</span>
-                        </>
-                      )}
-                    </NavLink>
-                  </li>
-                )
-              })}
-            </ul>
-          </div>
-        ))}
-      </nav>
-
-      <div className="border-t border-sidebar-border p-3">
-        <div className="rounded-lg border border-sidebar-border bg-sidebar-accent/35 p-3">
-          <div className="flex items-center justify-between gap-2">
-            <span className="flex items-center gap-2 text-xs font-medium">
-              <Database className="size-3.5 text-primary" aria-hidden="true" />
-              Dataset
+      {/* Footer status widget */}
+      <div className="border-t border-sidebar-border/70 p-3">
+        <Link
+          to="/settings"
+          className="group block rounded-lg border border-sidebar-border/80 bg-sidebar-accent/40 p-2.5 transition-colors hover:border-border hover:bg-sidebar-accent"
+        >
+          <div className="flex items-center justify-between">
+            <span className="flex items-center gap-1.5 font-mono text-[11px] font-semibold text-sidebar-foreground">
+              <Database className="size-3 text-primary" aria-hidden="true" />
+              PSI Dataset
             </span>
-            <Badge
-              variant={
-                status.state === 'connected'
-                  ? 'success'
-                  : status.state === 'offline'
-                    ? 'warning'
-                    : 'muted'
-              }
-            >
-              {status.state === 'connected'
-                ? `${formatCount(status.investigationsLoaded) ?? '—'} records`
-                : status.state === 'offline'
-                  ? 'API offline'
-                  : 'Connecting…'}
-            </Badge>
+            <span className="flex items-center gap-1">
+              <span
+                className={cn(
+                  'size-1.5 rounded-full',
+                  status.state === 'connected'
+                    ? 'bg-emerald-500 animate-pulse'
+                    : status.state === 'offline'
+                      ? 'bg-amber-500'
+                      : 'bg-muted-foreground/40',
+                )}
+                aria-hidden="true"
+              />
+              <span className="font-mono text-[10px] text-muted-foreground">
+                {status.state === 'connected' ? 'LIVE' : status.state === 'offline' ? 'OFFLINE' : 'INIT'}
+              </span>
+            </span>
           </div>
-          <p className="mt-2 text-[11px] leading-relaxed text-muted-foreground">
-            {status.state === 'connected'
-              ? `Read-only SQLite copy of the cleaned dataset. SHA-256 ${status.dataset?.dataset_sha256?.slice(0, 10) ?? 'unavailable'}…`
-              : status.state === 'offline'
-                ? `The frontend cannot reach ${import.meta.env.VITE_API_BASE_URL ?? 'http://localhost:3001/api'}. Start the backend to load records.`
-                : 'Checking the read-only API connection…'}
-          </p>
-        </div>
-        <p className="mt-3 flex items-center gap-1.5 px-1 text-[10px] text-muted-foreground/70">
-          <Flame className="size-3" aria-hidden="true" />
-          Built for microgravity combustion research
-        </p>
+          <div className="mt-1 flex items-center justify-between text-[10.5px] text-muted-foreground">
+            <span>{status.state === 'connected' ? `${formatCount(status.investigationsLoaded)} records` : 'Unavailable'}</span>
+            <span className="font-mono text-[9px] uppercase tracking-wider text-muted-foreground/75">
+              {status.dataset?.dataset_sha256 ? `${status.dataset.dataset_sha256.slice(0, 7)}` : 'sha-256'}
+            </span>
+          </div>
+        </Link>
       </div>
     </div>
   )
@@ -110,7 +119,7 @@ export function SidebarNav({ onNavigate }: { onNavigate?: () => void }) {
 
 export function DesktopSidebar() {
   return (
-    <aside className="fixed inset-y-0 left-0 z-40 hidden w-64 border-r border-sidebar-border bg-sidebar text-sidebar-foreground lg:block">
+    <aside className="fixed inset-y-0 left-0 z-40 hidden w-60 border-r border-sidebar-border bg-sidebar text-sidebar-foreground lg:block">
       <SidebarNav />
     </aside>
   )

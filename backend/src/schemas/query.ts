@@ -108,3 +108,23 @@ export const documentsQuerySchema = z.object({
 })
 
 export type DocumentsQuery = z.infer<typeof documentsQuerySchema>
+
+export const exportQuerySchema = z.object({
+  format: z.enum(['json', 'csv']).default('json'),
+  type: z.enum(['dataset', 'statistics']).default('dataset'),
+  id: z.preprocess(
+    emptyToUndefined,
+    z
+      .string()
+      .max(40)
+      .transform((val) => val.toUpperCase())
+      .optional(),
+  ),
+  q: searchTerm,
+  relevance: relevanceFilter,
+  area: z.preprocess(splitCsv, z.array(z.string().min(1)).optional()),
+  project_type: z.preprocess(splitCsv, z.array(z.string().min(1)).optional()),
+  status: extractionFilter,
+})
+
+export type ExportQuery = z.infer<typeof exportQuerySchema>

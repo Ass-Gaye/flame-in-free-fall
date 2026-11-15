@@ -488,6 +488,110 @@ describe('GET /api/documents', () => {
   })
 })
 
+describe('GET /api/export', () => {
+  it('exports the validated dataset as JSON', async () => {
+    const response = await request(app)
+      .get('/api/export?format=json')
+      .expect(200)
+
+    expect(response.headers['content-type']).toContain('application/json')
+    expect(response.headers['content-disposition']).toContain('flame-in-freefall-dataset.json')
+    expect(Array.isArray(response.body)).toBe(true)
+    expect(response.body).toHaveLength(133)
+  })
+
+  it('exports the validated dataset as CSV', async () => {
+    const response = await request(app)
+      .get('/api/export?format=csv')
+      .expect(200)
+
+    expect(response.headers['content-type']).toContain('text/csv')
+    expect(response.headers['content-disposition']).toContain('flame-in-freefall-dataset.csv')
+    expect(response.text).toContain('investigation_id')
+    expect(response.text).toContain('PSI-1')
+  })
+
+  it('exports filtered investigations as JSON with matching count', async () => {
+    const response = await request(app)
+      .get('/api/export?format=json&relevance=direct')
+      .expect(200)
+
+    expect(response.headers['content-type']).toContain('application/json')
+    expect(response.headers['content-disposition']).toContain('flame-in-freefall-filtered.json')
+    expect(Array.isArray(response.body)).toBe(true)
+    expect(response.body).toHaveLength(10)
+    expect(response.body.every((item: any) => item.relevance_category === 'direct')).toBe(true)
+  })
+
+  it('exports filtered investigations as CSV with matching row count', async () => {
+    const response = await request(app)
+      .get('/api/export?format=csv&relevance=direct')
+      .expect(200)
+
+    expect(response.headers['content-type']).toContain('text/csv')
+    expect(response.headers['content-disposition']).toContain('flame-in-freefall-filtered.csv')
+    expect(response.text).toContain('PSI-68')
+    expect(response.text).toContain('direct')
+  })
+
+  it('exports filtered investigations by search query', async () => {
+    const response = await request(app)
+      .get('/api/export?format=json&q=cool+flame')
+      .expect(200)
+
+    expect(Array.isArray(response.body)).toBe(true)
+    expect(response.body.length).toBeGreaterThan(0)
+    expect(response.body.some((item: any) => item.investigation_id === 'PSI-117')).toBe(true)
+  })
+
+  it('exports a single investigation record as JSON', async () => {
+    const response = await request(app)
+      .get('/api/export?format=json&id=PSI-117')
+      .expect(200)
+
+    expect(response.headers['content-disposition']).toContain('flame-in-freefall-PSI-117.json')
+    expect(response.body.investigation_id).toBe('PSI-117')
+    expect(response.body.title).toContain('Cool Flame')
+  })
+
+  it('exports a single investigation record as CSV', async () => {
+    const response = await request(app)
+      .get('/api/export?format=csv&id=PSI-117')
+      .expect(200)
+
+    expect(response.headers['content-disposition']).toContain('flame-in-freefall-PSI-117.csv')
+    expect(response.text).toContain('PSI-117')
+  })
+
+  it('returns 404 when exporting an unknown investigation ID', async () => {
+    const response = await request(app)
+      .get('/api/export?format=json&id=PSI-99999')
+      .expect(404)
+
+    expect(response.body.error.code).toBe('investigation_not_found')
+  })
+
+  it('exports dataset research statistics as JSON', async () => {
+    const response = await request(app)
+      .get('/api/export?type=statistics')
+      .expect(200)
+
+    expect(response.headers['content-type']).toContain('application/json')
+    expect(response.headers['content-disposition']).toContain('flame-in-freefall-statistics.json')
+    expect(response.body.totals.investigations).toBe(133)
+    const directCount = response.body.by_relevance.find((item: any) => item.value === 'direct')?.count
+    expect(directCount).toBe(10)
+  })
+
+  it('rejects unsupported formats with 400', async () => {
+    const response = await request(app)
+      .get('/api/export?format=xml')
+      .expect(400)
+
+    expect(response.body.error.code).toBe('validation_error')
+  })
+})
+
 describe('unknown routes', () => {
   it('returns a structured 404', async () => {
     const response = await request(app).get('/api/unknown').expect(404)

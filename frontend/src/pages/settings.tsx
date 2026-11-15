@@ -27,6 +27,8 @@ import {
 import { Separator } from '@/components/ui/separator'
 import { useTheme, type Theme } from '@/lib/theme'
 import { useDatasetStatus } from '@/lib/dataset-status'
+import { getAiStatus } from '@/lib/api'
+import { useApiQuery } from '@/lib/api-hooks'
 import { formatCount, formatTimestamp, shortHash } from '@/lib/format'
 import { cn } from '@/lib/utils'
 
@@ -64,13 +66,6 @@ const previewStates = [
 
 type PreviewState = (typeof previewStates)[number]['value']
 
-const aiFields = [
-  ['Provider', 'ollama'],
-  ['Model', 'gemma4:e2b'],
-  ['Base URL', 'http://localhost:11434'],
-  ['Status', 'Configured in Phase 5'],
-]
-
 const stack = [
   ['React', '19'],
   ['TypeScript', '7'],
@@ -83,6 +78,23 @@ export function SettingsPage() {
   const { theme, resolvedTheme, setTheme } = useTheme()
   const status = useDatasetStatus()
   const [preview, setPreview] = useState<PreviewState>('empty')
+
+  const aiQuery = useApiQuery('ai-status', (signal) => getAiStatus({ signal }))
+  const aiStatus = aiQuery.data
+
+  const aiFields: [string, string][] = [
+    ['Provider', aiStatus ? aiStatus.provider.toUpperCase() : 'Connecting…'],
+    ['Model', aiStatus ? aiStatus.model : 'Connecting…'],
+    [
+      'Status',
+      aiStatus
+        ? aiStatus.available
+          ? 'Available & Active'
+          : 'Configured (Offline)'
+        : 'Checking status…',
+    ],
+    ['Base URL', aiStatus?.baseUrl ?? 'Cloud API / Local Provider'],
+  ]
 
   const datasetFields: [string, string][] = [
     ['File', 'nasa-fire-data/psi_output/merged_master_dataset.json'],
@@ -119,7 +131,7 @@ export function SettingsPage() {
       <PageHeader
         eyebrow="Settings"
         title="Appearance and configuration"
-        description="Theme preferences apply immediately. The dataset panel reflects the live read-only API; this page does not pretend to save settings that have no endpoint."
+        description="Theme preferences apply immediately. The dataset and AI panels reflect the live read-only API; this page does not pretend to save settings that have no endpoint."
         actions={
           <Badge
             variant={
@@ -131,9 +143,9 @@ export function SettingsPage() {
             }
           >
             {status.state === 'connected'
-              ? 'Phase 3 · API connected'
+              ? 'API connected'
               : status.state === 'offline'
-                ? 'Phase 3 · API offline'
+                ? 'API offline'
                 : 'Checking connection…'}
           </Badge>
         }
@@ -286,7 +298,7 @@ export function SettingsPage() {
               <Cpu className="size-4 text-primary" aria-hidden="true" />
               AI assistant
             </CardTitle>
-            <CardDescription>Planned local configuration.</CardDescription>
+            <CardDescription>Live backend AI provider status.</CardDescription>
           </CardHeader>
           <CardContent>
             <dl className="space-y-2.5">

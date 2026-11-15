@@ -9,6 +9,7 @@ const server = app.listen(config.port, () => {
     `flame-in-freefall API listening on http://localhost:${config.port} (${config.nodeEnv})`,
   )
   console.log(`Database: ${config.databaseUrl}`)
+  console.log(`AI Provider: ${config.ai.provider}`)
 })
 
 let shuttingDown = false

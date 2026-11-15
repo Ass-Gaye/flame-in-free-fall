@@ -37,7 +37,7 @@ loads that file directly and no page estimates a statistic.
 
 ```bash
 npm install
-npm run dev      # local dev server on http://localhost:5173
+npm run dev      # local dev server on http://localhost:5174
 npm run build    # type-check and production build
 npm run lint     # oxlint
 npm test         # Vitest run

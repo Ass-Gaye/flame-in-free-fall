@@ -4,21 +4,26 @@ import type { ComponentProps } from 'react'
 import { cn } from '@/lib/utils'
 
 const badgeVariants = cva(
-  'inline-flex w-fit shrink-0 items-center justify-center gap-1 overflow-hidden whitespace-nowrap rounded-full border px-2.5 py-0.5 text-xs font-medium transition-colors [&>svg]:size-3 [&>svg]:pointer-events-none',
+  'inline-flex w-fit shrink-0 items-center justify-center gap-1.5 whitespace-nowrap rounded-md border px-2 py-0.5 text-[11px] font-medium transition-colors [&>svg]:size-3 [&>svg]:pointer-events-none',
   {
     variants: {
       variant: {
-        default: 'border-transparent bg-primary text-primary-foreground',
-        secondary: 'border-transparent bg-secondary text-secondary-foreground',
+        default:
+          'border-primary/20 bg-primary/10 text-primary dark:bg-primary/15 dark:border-primary/30',
+        secondary:
+          'border-border/80 bg-secondary text-secondary-foreground',
         destructive:
-          'border-transparent bg-destructive/12 text-destructive dark:bg-destructive/20',
-        outline: 'border-border text-foreground',
-        muted: 'border-transparent bg-muted text-muted-foreground',
+          'border-destructive/20 bg-destructive/10 text-destructive dark:bg-destructive/15 dark:border-destructive/30',
+        outline:
+          'border-border text-muted-foreground hover:text-foreground',
+        muted:
+          'border-border/60 bg-muted/40 text-muted-foreground',
         success:
-          'border-transparent bg-emerald-500/12 text-emerald-700 dark:text-emerald-300',
+          'border-emerald-500/25 bg-emerald-500/10 text-emerald-700 dark:bg-emerald-500/15 dark:text-emerald-300',
         warning:
-          'border-transparent bg-amber-500/14 text-amber-700 dark:text-amber-300',
-        info: 'border-transparent bg-sky-500/12 text-sky-700 dark:text-sky-300',
+          'border-amber-500/25 bg-amber-500/10 text-amber-700 dark:bg-amber-500/15 dark:text-amber-300',
+        info:
+          'border-sky-500/25 bg-sky-500/10 text-sky-700 dark:bg-sky-500/15 dark:text-sky-300',
       },
     },
     defaultVariants: {

@@ -6,6 +6,8 @@
  */
 
 import type {
+  AiQueryResponse,
+  AiStatusResponse,
   ApiErrorBody,
   DatasetMeta,
   DocumentListResponse,
@@ -175,6 +177,60 @@ async function request<T>(
   return payload as T
 }
 
+async function postRequest<T>(
+  path: string,
+  body: object,
+  options: RequestOptions = {},
+): Promise<T> {
+  const url = `${apiBaseUrl}${path}`
+
+  let response: Response
+
+  try {
+    response = await fetch(url, {
+      method: 'POST',
+      headers: {
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(body),
+      signal: options.signal,
+    })
+  } catch (error) {
+    if (error instanceof DOMException && error.name === 'AbortError') {
+      throw error
+    }
+
+    throw new ApiError(
+      `Could not reach the API at ${apiBaseUrl}. Is the backend running?`,
+      0,
+      'network_error',
+    )
+  }
+
+  const text = await response.text()
+  const payload = text.length > 0 ? parseJson(text) : undefined
+
+  if (!response.ok) {
+    if (isApiErrorBody(payload)) {
+      throw new ApiError(
+        payload.error.message,
+        response.status,
+        payload.error.code,
+        payload.error.details,
+      )
+    }
+
+    throw new ApiError(
+      `The API returned status ${response.status}.`,
+      response.status,
+      'http_error',
+    )
+  }
+
+  return payload as T
+}
+
 export function getHealth(options?: RequestOptions): Promise<HealthResponse> {
   return request('/health', {}, options)
 }
@@ -233,6 +289,57 @@ export function listDocuments(
   options?: RequestOptions,
 ): Promise<DocumentListResponse> {
   return request('/documents', params, options)
+}
+
+export function getAiStatus(options?: RequestOptions): Promise<AiStatusResponse> {
+  return request('/ai/status', {}, options)
+}
+
+export interface ExportDatasetParams {
+  format?: 'json' | 'csv'
+  type?: 'dataset' | 'statistics'
+  id?: string
+  q?: string
+  relevance?: string[]
+  area?: string[]
+  project_type?: string[]
+  status?: string[]
+}
+
+export function exportDatasetUrl(
+  params: ExportDatasetParams | 'json' | 'csv' = {},
+): string {
+  if (typeof params === 'string') {
+    return `${apiBaseUrl}/export?format=${params}`
+  }
+
+  const query = new URLSearchParams()
+  if (params.format) query.set('format', params.format)
+  if (params.type && params.type !== 'dataset') query.set('type', params.type)
+  if (params.id) query.set('id', params.id)
+  if (params.q) query.set('q', params.q)
+  if (params.relevance && params.relevance.length > 0) {
+    query.set('relevance', params.relevance.join(','))
+  }
+  if (params.area && params.area.length > 0) {
+    query.set('area', params.area.join(','))
+  }
+  if (params.project_type && params.project_type.length > 0) {
+    query.set('project_type', params.project_type.join(','))
+  }
+  if (params.status && params.status.length > 0) {
+    query.set('status', params.status.join(','))
+  }
+
+  const qs = query.toString()
+  return `${apiBaseUrl}/export${qs ? `?${qs}` : ''}`
+}
+
+export function queryAiAssistant(
+  query: string,
+  options?: RequestOptions,
+): Promise<AiQueryResponse> {
+  return postRequest('/ai/query', { query }, options)
 }
 
 /** Convenience helper for pagination controls. */

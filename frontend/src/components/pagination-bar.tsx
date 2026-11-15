@@ -27,7 +27,7 @@ export function PaginationBar({
   return (
     <div
       className={cn(
-        'flex flex-col gap-3 border-t border-border/70 px-4 py-3 text-xs text-muted-foreground sm:flex-row sm:items-center sm:justify-between sm:px-5',
+        'flex flex-col gap-3 border-t border-border/60 px-4 py-2.5 text-xs text-muted-foreground sm:flex-row sm:items-center sm:justify-between sm:px-5',
         className,
       )}
     >

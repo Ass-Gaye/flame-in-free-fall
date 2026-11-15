@@ -239,3 +239,33 @@ export interface DocumentListResponse {
   items: DocumentItem[]
   pagination: Pagination
 }
+
+export interface AiStatusResponse {
+  success: boolean
+  provider: 'ollama' | 'gemini'
+  configured: boolean
+  available: boolean
+  model: string
+  baseUrl?: string
+  message?: string
+}
+
+export interface AiCitation {
+  investigation_id: string
+  title: string
+  url: string | null
+  relevance_category: RelevanceCategory
+  research_area: string
+}
+
+export interface AiQueryRequest {
+  query: string
+}
+
+export interface AiQueryResponse {
+  success: boolean
+  answer: string
+  provider: 'ollama' | 'gemini'
+  model: string
+  investigations: AiCitation[]
+}

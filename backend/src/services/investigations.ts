@@ -385,3 +385,82 @@ function parseAuthors(value: string): string[] {
   }
   return []
 }
+
+export async function getFilteredInvestigationRawRecords(
+  prisma: PrismaClient,
+  query: {
+    q?: string
+    relevance?: InvestigationListQuery['relevance']
+    area?: string[]
+    project_type?: string[]
+    status?: InvestigationListQuery['status']
+  },
+): Promise<Record<string, unknown>[]> {
+  const where = buildWhere(query as InvestigationListQuery)
+  const rows = await prisma.investigation.findMany({
+    where,
+    select: {
+      investigation_id: true,
+      title: true,
+      keywords: true,
+      objectives: true,
+      approach: true,
+      raw_json: true,
+    },
+  })
+
+  const term = query.q ? normalizeSearch(query.q) : null
+
+  const ranked = rows.flatMap((row) => {
+    if (!term) {
+      return [{ row, searchScore: 0 }]
+    }
+    const score = searchScore(row as unknown as InvestigationRow, term)
+    return score === null ? [] : [{ row, searchScore: score }]
+  })
+
+  if (term) {
+    ranked.sort((a, b) => b.searchScore - a.searchScore)
+  }
+
+  return ranked.map((item) => JSON.parse(item.row.raw_json) as Record<string, unknown>)
+}
+
+export function recordsToCsv(records: Record<string, unknown>[]): string {
+  if (records.length === 0) {
+    return '\uFEFF'
+  }
+
+  const fieldnames: string[] = []
+  for (const record of records) {
+    for (const key of Object.keys(record)) {
+      if (!fieldnames.includes(key)) {
+        fieldnames.push(key)
+      }
+    }
+  }
+
+  const escapeCell = (value: unknown): string => {
+    if (value === null || value === undefined) {
+      return ''
+    }
+    let str: string
+    if (typeof value === 'object') {
+      str = JSON.stringify(value)
+    } else {
+      str = String(value)
+    }
+
+    if (/[",\r\n]/.test(str)) {
+      return `"${str.replace(/"/g, '""')}"`
+    }
+    return str
+  }
+
+  const header = fieldnames.map(escapeCell).join(',')
+  const rows = records.map((record) =>
+    fieldnames.map((field) => escapeCell(record[field])).join(','),
+  )
+
+  return '\uFEFF' + [header, ...rows].join('\r\n') + '\r\n'
+}

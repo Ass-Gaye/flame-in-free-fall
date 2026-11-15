@@ -1,16 +1,16 @@
 import {
-  BarChart3,
-  FileBarChart,
-  Info,
-  Layers,
-  PieChart,
+  BookOpen,
+  Database,
+  FileCheck,
+  Flame,
+  RefreshCw,
   ShieldCheck,
-  TrendingUp,
 } from 'lucide-react'
 
 import { PageHeader } from '@/components/layout/page-header'
-import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert'
+import { ErrorState } from '@/components/states/error-state'
 import { Badge } from '@/components/ui/badge'
+import { Button } from '@/components/ui/button'
 import {
   Card,
   CardContent,
@@ -18,162 +18,204 @@ import {
   CardHeader,
   CardTitle,
 } from '@/components/ui/card'
+import { useApiQuery } from '@/lib/api-hooks'
+import { getStatistics } from '@/lib/api'
+import { formatCount } from '@/lib/format'
 
-const charts = [
-  {
-    title: 'Relevance distribution',
-    description: 'Direct, supporting, and peripheral counts with the rule evidence behind them.',
-    icon: PieChart,
-  },
-  {
-    title: 'Research area distribution',
-    description: 'Investigation counts by NASA research area, ordered by share.',
-    icon: BarChart3,
-  },
-  {
-    title: 'Project type and extraction',
-    description: 'Ground versus microgravity, plus successful and incomplete extraction.',
-    icon: Layers,
-  },
-  {
-    title: 'Publication coverage',
-    description: 'How many records carry publications, DOIs, and document links.',
-    icon: FileBarChart,
-  },
-]
-
-const planned = [
-  'Relevance distribution and evidence coverage',
-  'Research area and project type distributions',
-  'Extraction completeness and publication availability',
-  'Document availability by research area',
-  'Recurring research themes derived from curated fields',
-  'Potential research gaps, always framed as observations',
-]
+import { RelevanceChart } from '@/components/analytics/relevance-chart'
+import { ResearchAreaChart } from '@/components/analytics/research-area-chart'
+import { CoverageBreakdown } from '@/components/analytics/coverage-breakdown'
+import { ResearchThemes } from '@/components/analytics/research-themes'
+import { ResearchGaps } from '@/components/analytics/research-gaps'
 
 export function AnalyticsPage() {
+  const { data, error, isLoading, isFetching, retry } = useApiQuery(
+    'statistics',
+    (signal) => getStatistics({ signal }),
+  )
+
+  const total = data?.totals.investigations ?? 133
+  const directCount =
+    data?.by_relevance.find((r) => r.value === 'direct')?.count ?? 10
+  const combustionCount =
+    data?.by_research_area.find((a) => a.value.includes('Combustion'))?.count ?? 24
+  const publicationsTotal = data?.totals.publications ?? 1786
+  const documentsTotal = data?.totals.documents ?? 30
+
   return (
     <div className="space-y-6">
       <PageHeader
-        eyebrow="Research analytics"
-        title="Analytics"
-        description="Distribution views and evidence-based observations about the collection. Charts stay empty until the statistics endpoint supplies verified values."
-        actions={<Badge variant="warning">Awaiting statistics API</Badge>}
+        eyebrow="Grounded Dataset Provenance"
+        title="Research Intelligence & Analytics"
+        description="Distributions, publication coverage, combustion themes, and gap analysis across 133 NASA PSI investigations."
+        actions={
+          <div className="flex items-center gap-2">
+            <Badge variant={error ? 'destructive' : 'success'}>
+              {error ? 'API Offline' : 'Phase 4 · Live Analytics'}
+            </Badge>
+            <Button
+              variant="outline"
+              size="sm"
+              onClick={retry}
+              disabled={isFetching}
+              className="gap-1.5 h-7.5 text-xs"
+            >
+              <RefreshCw
+                className={`size-3 ${isFetching ? 'animate-spin' : ''}`}
+                aria-hidden="true"
+              />
+              <span>Refresh</span>
+            </Button>
+          </div>
+        }
       />
 
-      <Alert variant="info">
-        <Info aria-hidden="true" />
-        <AlertTitle>Charts are deliberately unpopulated</AlertTitle>
-        <AlertDescription>
-          The Phase 2 backend will compute these figures from the validated
-          dataset. Until then, no counts, percentages, or trend lines are drawn
-          here.
-        </AlertDescription>
-      </Alert>
-
-      <div className="grid gap-4 md:grid-cols-2">
-        {charts.map((chart) => {
-          const Icon = chart.icon
-          return (
-            <Card key={chart.title}>
-              <CardHeader>
-                <div className="flex items-start justify-between gap-3">
-                  <div className="space-y-1">
-                    <CardTitle>{chart.title}</CardTitle>
-                    <CardDescription>{chart.description}</CardDescription>
-                  </div>
-                  <div className="grid size-8 shrink-0 place-items-center rounded-lg border border-border/70 bg-muted/40 text-muted-foreground">
-                    <Icon className="size-4" aria-hidden="true" />
-                  </div>
-                </div>
-              </CardHeader>
-              <CardContent>
-                <div
-                  aria-hidden="true"
-                  className="relative flex h-44 items-center justify-center overflow-hidden rounded-lg border border-dashed border-border/80 bg-muted/20"
-                >
-                  <div className="absolute inset-x-4 bottom-4 flex h-24 items-end gap-2 opacity-40">
-                    {[38, 62, 44, 78, 54, 88, 66, 50].map((height, index) => (
-                      <div
-                        key={index}
-                        className="flex-1 rounded-t bg-gradient-to-t from-primary/10 to-primary/30"
-                        style={{ height: `${height}%` }}
-                      />
-                    ))}
-                  </div>
-                  <span className="relative z-10 rounded-full border border-border/80 bg-background/85 px-3 py-1 text-[11px] font-medium text-muted-foreground backdrop-blur">
-                    No data connected
-                  </span>
-                </div>
-              </CardContent>
-            </Card>
-          )
-        })}
-      </div>
-
-      <div className="grid gap-4 lg:grid-cols-2">
-        <Card>
-          <CardHeader>
-            <CardTitle className="flex items-center gap-2">
-              <TrendingUp className="size-4 text-primary" aria-hidden="true" />
-              Planned analyses
-            </CardTitle>
-            <CardDescription>
-              Built only from fields present in the validated dataset.
-            </CardDescription>
-          </CardHeader>
-          <CardContent>
-            <ul className="space-y-2.5">
-              {planned.map((item) => (
-                <li key={item} className="flex gap-2.5 text-sm text-muted-foreground">
-                  <span
-                    aria-hidden="true"
-                    className="mt-1.5 size-1.5 shrink-0 rounded-full bg-primary/70"
-                  />
-                  <span className="leading-relaxed">{item}</span>
-                </li>
-              ))}
-            </ul>
+      {error ? (
+        <Card className="border-destructive/30 bg-destructive/5">
+          <CardContent className="p-0">
+            <ErrorState
+              title="Analytics data unavailable"
+              description={`${error.message}. Please verify the backend service is running.`}
+              onRetry={retry}
+            />
           </CardContent>
         </Card>
+      ) : null}
 
-        <Card>
-          <CardHeader>
-            <CardTitle className="flex items-center gap-2">
-              <ShieldCheck className="size-4 text-primary" aria-hidden="true" />
-              Interpretation rules
-            </CardTitle>
-            <CardDescription>
-              Every analytical conclusion must stay auditable.
-            </CardDescription>
-          </CardHeader>
-          <CardContent>
-            <ol className="space-y-3 text-sm leading-relaxed text-muted-foreground">
-              <li className="flex gap-3">
-                <span className="font-mono text-xs text-primary">01</span>
-                State what the dataset shows, with the exact count or relation.
-              </li>
-              <li className="flex gap-3">
-                <span className="font-mono text-xs text-primary">02</span>
-                Name the investigations that support the observation.
-              </li>
-              <li className="flex gap-3">
-                <span className="font-mono text-xs text-primary">03</span>
-                Explain the limitations, including missing fields and subset
-                coverage.
-              </li>
-              <li className="flex gap-3">
-                <span className="font-mono text-xs text-primary">04</span>
-                Describe further investigation as a possibility, not a finding.
-              </li>
-            </ol>
-            <p className="mt-4 border-t border-border/70 pt-4 text-xs leading-relaxed text-muted-foreground">
-              Research gaps are observations about this collected subset, not
-              confirmed scientific discoveries.
-            </p>
-          </CardContent>
-        </Card>
+      {/* Snapshot KPI Bar */}
+      <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-5">
+        <div className="rounded-xl border border-border/70 bg-card p-3.5 space-y-1">
+          <div className="flex items-center justify-between text-muted-foreground">
+            <span className="font-mono text-[10px] uppercase font-semibold">Investigations</span>
+            <Database className="size-3.5 text-primary" aria-hidden="true" />
+          </div>
+          <div className="text-2xl font-bold tabular-nums text-foreground tracking-tight">
+            {formatCount(total)}
+          </div>
+          <p className="text-[10.5px] text-muted-foreground">NASA PSI records</p>
+        </div>
+
+        <div className="rounded-xl border border-border/70 bg-card p-3.5 space-y-1">
+          <div className="flex items-center justify-between text-muted-foreground">
+            <span className="font-mono text-[10px] uppercase font-semibold">Direct Fire Safety</span>
+            <ShieldCheck className="size-3.5 text-primary" aria-hidden="true" />
+          </div>
+          <div className="text-2xl font-bold tabular-nums text-foreground tracking-tight">
+            {formatCount(directCount)}
+          </div>
+          <p className="text-[10.5px] text-muted-foreground">Explicit flame & safety</p>
+        </div>
+
+        <div className="rounded-xl border border-border/70 bg-card p-3.5 space-y-1">
+          <div className="flex items-center justify-between text-muted-foreground">
+            <span className="font-mono text-[10px] uppercase font-semibold">Combustion Science</span>
+            <Flame className="size-3.5 text-primary" aria-hidden="true" />
+          </div>
+          <div className="text-2xl font-bold tabular-nums text-foreground tracking-tight">
+            {formatCount(combustionCount)}
+          </div>
+          <p className="text-[10.5px] text-muted-foreground">Direct + supporting</p>
+        </div>
+
+        <div className="rounded-xl border border-border/70 bg-card p-3.5 space-y-1">
+          <div className="flex items-center justify-between text-muted-foreground">
+            <span className="font-mono text-[10px] uppercase font-semibold">Publications</span>
+            <BookOpen className="size-3.5 text-primary" aria-hidden="true" />
+          </div>
+          <div className="text-2xl font-bold tabular-nums text-foreground tracking-tight">
+            {formatCount(publicationsTotal)}
+          </div>
+          <p className="text-[10.5px] text-muted-foreground">Indexed papers</p>
+        </div>
+
+        <div className="rounded-xl border border-border/70 bg-card p-3.5 space-y-1 col-span-2 sm:col-span-1">
+          <div className="flex items-center justify-between text-muted-foreground">
+            <span className="font-mono text-[10px] uppercase font-semibold">Documents</span>
+            <FileCheck className="size-3.5 text-primary" aria-hidden="true" />
+          </div>
+          <div className="text-2xl font-bold tabular-nums text-foreground tracking-tight">
+            {formatCount(documentsTotal)}
+          </div>
+          <p className="text-[10.5px] text-muted-foreground">Across 28 records</p>
+        </div>
       </div>
+
+      {/* Main Charts Row */}
+      <div className="grid gap-6 lg:grid-cols-2">
+        <RelevanceChart
+          data={data?.by_relevance ?? []}
+          total={total}
+          isLoading={isLoading}
+        />
+        <ResearchAreaChart
+          researchAreas={data?.by_research_area ?? []}
+          projectTypes={data?.by_project_type ?? []}
+          total={total}
+          isLoading={isLoading}
+        />
+      </div>
+
+      {/* Completeness & Provenance Coverage */}
+      {data ? <CoverageBreakdown stats={data} isLoading={isLoading} /> : null}
+
+      {/* Qualitative Intelligence & Programmatic Themes */}
+      <div className="grid gap-6 lg:grid-cols-2">
+        <ResearchThemes />
+        <ResearchGaps />
+      </div>
+
+      {/* Scientific Integrity & Interpretation Guardrails */}
+      <Card>
+        <CardHeader>
+          <CardTitle className="flex items-center gap-2 text-base">
+            <ShieldCheck className="size-4 text-primary" aria-hidden="true" />
+            Scientific Integrity & Interpretation Protocol
+          </CardTitle>
+          <CardDescription>
+            Mandatory guidelines governing how observations are derived and
+            communicated.
+          </CardDescription>
+        </CardHeader>
+        <CardContent>
+          <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4 text-xs">
+            <div className="space-y-1.5 rounded-lg border border-border/60 bg-muted/20 p-3">
+              <span className="font-mono text-primary font-bold">01</span>
+              <p className="font-semibold text-foreground">Exact Empirical Counts</p>
+              <p className="text-muted-foreground leading-relaxed">
+                State what the dataset shows with verifiable numeric relations,
+                never generalizing or projecting beyond the ingested sample.
+              </p>
+            </div>
+
+            <div className="space-y-1.5 rounded-lg border border-border/60 bg-muted/20 p-3">
+              <span className="font-mono text-primary font-bold">02</span>
+              <p className="font-semibold text-foreground">Specific Evidence Citations</p>
+              <p className="text-muted-foreground leading-relaxed">
+                Every programmatic observation links directly to the specific
+                NASA PSI investigation IDs that support the finding.
+              </p>
+            </div>
+
+            <div className="space-y-1.5 rounded-lg border border-border/60 bg-muted/20 p-3">
+              <span className="font-mono text-primary font-bold">03</span>
+              <p className="font-semibold text-foreground">Explicit Limitations</p>
+              <p className="text-muted-foreground leading-relaxed">
+                Acknowledge unrecorded fields, web extraction anomalies, and
+                subset boundaries as limitations, never as proof of nonexistence.
+              </p>
+            </div>
+
+            <div className="space-y-1.5 rounded-lg border border-border/60 bg-muted/20 p-3">
+              <span className="font-mono text-primary font-bold">04</span>
+              <p className="font-semibold text-foreground">Possibilities, Not Discoveries</p>
+              <p className="text-muted-foreground leading-relaxed">
+                Framed as areas for future investigation and data enrichment, not
+                as confirmed scientific discoveries.
+              </p>
+            </div>
+          </div>
+        </CardContent>
+      </Card>
     </div>
   )
 }

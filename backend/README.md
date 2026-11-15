@@ -82,6 +82,9 @@ All endpoints are `GET`. There are no mutation routes.
 | `/api/filters` | Filter values with counts |
 | `/api/publications` | Grouped publications, or raw entries via `view=entries` |
 | `/api/documents` | Flattened document index with investigation context |
+| `/api/export` | Verified dataset exports in JSON/CSV (full, filtered, single ID, or statistics) |
+| `/api/ai/status` | Current AI provider, configuration status, availability, and active model |
+| `/api/ai/query` | Grounded research query endpoint with investigation citations (POST) |
 
 ### `GET /api/investigations`
 
@@ -113,6 +116,101 @@ the single search path.
 The current dataset produces 1,491 grouped records: 228 DOI groups and 1,263
 label-only groups. The 1,786 entries sum exactly across those groups. 1,434
 groups expose a URL (including 1,206 label-only groups) and 6 carry a PubMed ID.
+
+## AI Provider Layer
+
+The backend provides an extensible AI provider abstraction for the AI research intelligence layer:
+
+- **Google Gemini (Default):** Uses cloud models (e.g., `gemini-2.5-flash`) via the official `@google/genai` SDK. When `GEMINI_API_KEY` is present, Gemini is the primary provider. If the key is missing or Gemini is unavailable at runtime, the system **automatically falls back to Ollama**.
+- **Ollama (Automatic Fallback / Standalone):** Runs local open models like `gemma4:e2b` with zero cloud dependencies, complete data privacy, and no API subscription costs. Set `AI_PROVIDER=ollama` to use Ollama exclusively without fallback.
+
+### Fallback Behavior
+
+When `AI_PROVIDER=gemini` (the default):
+
+1. If `GEMINI_API_KEY` is set → Gemini is used as the primary provider.
+2. If `GEMINI_API_KEY` is missing → Ollama is used automatically.
+3. If Gemini fails at runtime (rate limits, network errors) → Ollama is used for that request.
+
+The `/api/ai/status` endpoint reports both providers when fallback is active, showing which is currently serving requests.
+
+### Configuration & Switching
+
+Configure providers in `backend/.env`:
+
+```env
+# AI Provider: 'gemini' (default) or 'ollama'
+AI_PROVIDER=gemini
+
+# Google Gemini Configuration (primary)
+GEMINI_API_KEY=your-gemini-api-key
+GEMINI_MODEL=gemini-2.5-flash
+
+# Ollama Configuration (fallback, or standalone when AI_PROVIDER=ollama)
+OLLAMA_BASE_URL=http://localhost:11434
+OLLAMA_MODEL=gemma4:e2b
+```
+
+To use Ollama exclusively, set `AI_PROVIDER=ollama`. Unsupported provider values are rejected with a clear error.
+
+### Status Endpoint
+
+Inspect the active provider, configuration status, and service availability:
+
+```http
+GET /api/ai/status
+```
+
+Example response:
+
+```json
+{
+  "success": true,
+  "provider": "ollama",
+  "configured": true,
+  "available": true,
+  "model": "gemma4:e2b"
+}
+```
+
+- For **Ollama**, reachability is verified via the local Ollama service (`/api/version`).
+- For **Gemini**, credentials presence and SDK client initialization are verified without making unnecessary billable API requests.
+- Sensitive credentials, API keys, and environment variables are strictly never exposed in responses or logs.
+
+### Research Query Endpoint
+
+Submit natural-language questions to the grounded research assistant:
+
+```http
+POST /api/ai/query
+Content-Type: application/json
+
+{
+  "query": "Which investigations study flame spread in microgravity?"
+}
+```
+
+Responses include synthesized answers grounded exclusively in retrieved NASA records and the cited investigations:
+
+```json
+{
+  "success": true,
+  "answer": "Based on [PSI-10] and [PSI-22], the investigations study...",
+  "provider": "ollama",
+  "model": "gemma4:e2b",
+  "investigations": [
+    {
+      "investigation_id": "PSI-10",
+      "title": "Burning and Suppression of Solids - II",
+      "url": "https://psi.nasa.gov/search/?q=PSI-10",
+      "relevance_category": "direct",
+      "research_area": "Combustion Science"
+    }
+  ]
+}
+```
+
+If the query is unsupported or outside the scope of the NASA PSI dataset, the endpoint returns an evidence-grounded refusal rather than hallucinating facts.
 
 ## Data integrity
 
