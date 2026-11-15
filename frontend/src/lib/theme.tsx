@@ -54,6 +54,7 @@ export function ThemeProvider({ children }: { children: ReactNode }) {
   useEffect(() => {
     const root = document.documentElement
     root.classList.toggle('dark', resolvedTheme === 'dark')
+    root.setAttribute('data-theme', resolvedTheme)
     root.style.colorScheme = resolvedTheme
     try {
       localStorage.setItem(STORAGE_KEY, theme)

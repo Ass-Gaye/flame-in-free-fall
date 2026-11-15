@@ -52,11 +52,20 @@
 :root {
   --radius: 0.625rem;
 
-  --background: oklch(0.985 0.003 250);
+  /* Global NASA-inspired application background */
+  --app-bg: #071426;
+  --surface: rgba(7, 17, 31, 0.94);
+  --surface-secondary: rgba(13, 28, 46, 0.92);
+  --text-primary: #f4f8ff;
+  --text-secondary: #9aadc4;
+  --border-color: rgba(148, 178, 210, 0.13);
+  --accent: #ff642d;
+
+  --background: transparent;
   --foreground: oklch(0.16 0.015 250);
-  --card: oklch(1 0 0);
+  --card: var(--surface);
   --card-foreground: oklch(0.16 0.015 250);
-  --popover: oklch(1 0 0);
+  --popover: var(--surface-secondary);
   --popover-foreground: oklch(0.16 0.015 250);
   --primary: oklch(0.58 0.20 38);
   --primary-foreground: oklch(0.99 0.002 85);
@@ -64,11 +73,10 @@
   --secondary-foreground: oklch(0.24 0.015 250);
   --muted: oklch(0.96 0.004 250);
   --muted-foreground: oklch(0.48 0.015 250);
-  --accent: oklch(0.95 0.015 45);
   --accent-foreground: oklch(0.25 0.05 40);
   --destructive: oklch(0.55 0.22 25);
   --destructive-foreground: oklch(0.99 0.002 85);
-  --border: oklch(0.90 0.005 250);
+  --border: var(--border-color);
   --input: oklch(0.88 0.006 250);
   --ring: oklch(0.58 0.20 38);
 
@@ -78,24 +86,32 @@
   --chart-4: oklch(0.56 0.12 265);
   --chart-5: oklch(0.64 0.16 15);
 
-  --sidebar: oklch(0.978 0.003 250);
+  --sidebar: var(--surface);
   --sidebar-foreground: oklch(0.28 0.015 250);
   --sidebar-primary: var(--primary);
   --sidebar-primary-foreground: var(--primary-foreground);
   --sidebar-accent: oklch(0.94 0.008 250);
   --sidebar-accent-foreground: oklch(0.16 0.015 250);
-  --sidebar-border: oklch(0.90 0.005 250);
+  --sidebar-border: var(--border-color);
   --sidebar-ring: var(--ring);
 }
 
+[data-theme="dark"],
 .dark {
   --radius: 0.625rem;
 
-  --background: oklch(0.12 0.012 255);
+  --app-bg: #050d19;
+  --surface: rgba(5, 13, 25, 0.94);
+  --surface-secondary: rgba(10, 23, 39, 0.93);
+  --text-primary: #f4f8ff;
+  --text-secondary: #9aadc4;
+  --border-color: rgba(148, 178, 210, 0.13);
+
+  --background: transparent;
   --foreground: oklch(0.96 0.004 250);
-  --card: oklch(0.16 0.014 255);
+  --card: var(--surface);
   --card-foreground: oklch(0.96 0.004 250);
-  --popover: oklch(0.16 0.014 255);
+  --popover: var(--surface-secondary);
   --popover-foreground: oklch(0.96 0.004 250);
   --primary: oklch(0.70 0.19 42);
   --primary-foreground: oklch(0.12 0.02 40);
@@ -107,7 +123,7 @@
   --accent-foreground: oklch(0.92 0.015 50);
   --destructive: oklch(0.62 0.20 25);
   --destructive-foreground: oklch(0.98 0.002 85);
-  --border: oklch(0.24 0.012 255);
+  --border: var(--border-color);
   --input: oklch(0.26 0.012 255);
   --ring: oklch(0.70 0.19 42);
 
@@ -117,14 +133,74 @@
   --chart-4: oklch(0.68 0.12 265);
   --chart-5: oklch(0.70 0.15 15);
 
-  --sidebar: oklch(0.105 0.012 255);
+  --sidebar: var(--surface);
   --sidebar-foreground: oklch(0.88 0.008 250);
   --sidebar-primary: var(--primary);
   --sidebar-primary-foreground: var(--primary-foreground);
   --sidebar-accent: oklch(0.18 0.014 255);
   --sidebar-accent-foreground: oklch(0.98 0.004 250);
-  --sidebar-border: oklch(0.20 0.012 255);
+  --sidebar-border: var(--border-color);
   --sidebar-ring: var(--ring);
+}
+
+[data-theme="light"],
+html:not(.dark) {
+  --app-bg: #eaf1f8;
+  --surface: rgba(248, 251, 255, 0.94);
+  --surface-secondary: rgba(235, 243, 251, 0.95);
+  --text-primary: #14283e;
+  --text-secondary: #61758c;
+  --border-color: rgba(37, 67, 99, 0.13);
+  --card: var(--surface);
+  --sidebar: var(--surface);
+  --popover: var(--surface-secondary);
+}
+
+body {
+  background-color: var(--app-bg);
+  color: var(--text-primary);
+}
+
+/* Fixed NASA space background */
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+
+  background:
+    linear-gradient(
+      rgba(4, 13, 27, 0.84),
+      rgba(4, 13, 27, 0.91)
+    ),
+    url("/images/nasa-orbit-bg.png");
+
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+
+[data-theme="light"] body::before,
+html:not(.dark) body::before {
+  background:
+    linear-gradient(
+      rgba(238, 245, 252, 0.87),
+      rgba(238, 245, 252, 0.94)
+    ),
+    url("/images/nasa-orbit-bg.png");
+
+  background-size: cover;
+  background-position: center;
+}
+
+.app-sidebar,
+.app-header,
+.dashboard-card,
+.research-panel {
+  background: var(--surface) !important;
+  color: var(--text-primary);
+  border-color: var(--border-color);
 }
 
 @layer base {

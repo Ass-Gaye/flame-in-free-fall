@@ -47,7 +47,7 @@ function Shell() {
   const [mobileOpen, setMobileOpen] = useState(false)
 
   return (
-    <div className="min-h-svh bg-background text-foreground">
+    <div className="min-h-svh bg-transparent text-foreground">
       <a
         href="#main-content"
         className="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-[60] focus:rounded-md focus:bg-primary focus:px-3 focus:py-1.5 focus:text-xs focus:font-medium focus:text-primary-foreground"

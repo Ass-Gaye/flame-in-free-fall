@@ -14,7 +14,7 @@ export function Topbar({ onOpenNav }: { onOpenNav: () => void }) {
   const status = useDatasetStatus()
 
   return (
-    <header className="sticky top-0 z-30 flex h-14 items-center justify-between gap-3 border-b border-border/70 bg-background/85 px-4 backdrop-blur-md sm:px-6 lg:px-8">
+    <header className="app-header sticky top-0 z-30 flex h-14 items-center justify-between gap-3 border-b border-border/70 bg-background/85 px-4 backdrop-blur-md sm:px-6 lg:px-8">
       <div className="flex items-center gap-3">
         <Button
           variant="ghost"
